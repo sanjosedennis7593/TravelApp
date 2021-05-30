@@ -1,13 +1,16 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { Alert } from 'react-native';
 
-import Header from '../../components/Header';
+import MainView from './components/MainView';
 
 
 const Home = (props: any) => {
-    return <ScrollView>
-        <Header />
-    </ScrollView>
+    const { navigation } = props;
+
+    const handleRedirect = (type:string) => {
+        navigation.navigate(type);
+    }
+    return <MainView handleRedirect={handleRedirect} />;
 }
 
 export default Home;
