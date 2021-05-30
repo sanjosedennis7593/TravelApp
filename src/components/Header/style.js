@@ -7,7 +7,7 @@ const style = StyleSheet.create({
     marginBottom: 60,
   },
   wave: {
-    backgroundColor: '#436bba', 
+    backgroundColor: '#7017ff', 
     height: 100
   },
   svg: {
