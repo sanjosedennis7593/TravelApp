@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Image, View, Text } from 'react-native';
 import { Input as InputField } from 'react-native-elements';
 import colors from '../../styles/colors';
 import styles from './style';
