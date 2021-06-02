@@ -3,7 +3,7 @@ import React from 'react';
 import MainView from './components/MainView';
 
 
-const MyRide = (props: any) => {
+const Feed = (props: any) => {
     const { navigation } = props;
 
     const handleRedirect = (type: string) => {
@@ -12,4 +12,4 @@ const MyRide = (props: any) => {
     return <MainView handleRedirect={handleRedirect} />;
 }
 
-export default MyRide;
+export default Feed;

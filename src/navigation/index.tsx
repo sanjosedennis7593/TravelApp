@@ -1,13 +1,16 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import {  Icon } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 
 import Home from '@app/containers/Home';
 import Profile from '@app/containers/Profile';
 
 // RIDE
 import CreateRide from '@app/containers/Ride/CreateRide';
+import Feed from '@app/containers/Ride/Feed';
+import MyRide from '@app/containers/Ride/MyRide';
+import RideDetails from '@app/containers/Ride/RideDetails';
 
 // STYLES
 import colors from '@app/styles/colors';
@@ -18,18 +21,18 @@ const Tab = createBottomTabNavigator();
 
 const screenOptions = {
     headerStyle: {
-      backgroundColor: colors.primary,
-      shadowOpacity: 0,
+        backgroundColor: colors.primary,
+        shadowOpacity: 0,
     },
     headerBackTitleVisible: false,
     headerTintColor: colors.backgroundColor1,
-    headerTitleAllowFontScaling:true,
+    headerTitleAllowFontScaling: true,
     headerTitleStyle: {
-      fontWeight: 'bold',
+        fontWeight: 'bold',
     },
     headerLeftContainerStyle: { paddingLeft: 8 },
     headerRightContainerStyle: { paddingRight: 16 },
-  }
+}
 
 const HomeNavigation = () => {
     return (
@@ -41,9 +44,44 @@ const HomeNavigation = () => {
                     headerShown: false,
                 }}
             />
-             <Stack.Screen
+            <Stack.Screen
                 name="CreateRide"
                 component={CreateRide}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="MyRide"
+                component={MyRide}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="RideDetails"
+                component={RideDetails}
+                options={{
+                    headerShown: false,
+                }}
+            />
+        </Stack.Navigator>
+    )
+}
+
+const FeedNavigation = () => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="Feed"
+                component={Feed}
+                options={{
+                    headerShown: false,
+                }}
+            />
+             <Stack.Screen
+                name="RideDetails"
+                component={RideDetails}
                 options={{
                     headerShown: false,
                 }}
@@ -73,14 +111,14 @@ const TabNavigation = () => {
             screenOptions={({ route }) => ({
                 headerShown: false,
                 tabBarIcon: ({ focused, color, size }) => {
-                    let iconName = focused ? 'checkbox-blank-circle' : 'checkbox-blank-circle-outline'; 
- 
+                    let iconName = focused ? 'checkbox-blank-circle' : 'checkbox-blank-circle-outline';
+
                     if (route.name === 'Home') {
-                      iconName = focused ? 'home' : 'home-outline';
+                        iconName = focused ? 'home' : 'home-outline';
                     } else if (route.name === 'Feed') {
-                      iconName = focused ? 'newspaper' : 'newspaper';
+                        iconName = focused ? 'newspaper' : 'newspaper';
                     } else if (route.name === 'Profile') {
-                      iconName = focused ? 'account' : 'account';
+                        iconName = focused ? 'account' : 'account';
                     }
                     return <Icon type="material-community" name={iconName} size={size} color={color} />;
                 },
@@ -91,7 +129,7 @@ const TabNavigation = () => {
             }}
         >
             <Tab.Screen name="Home" component={HomeNavigation} />
-            <Tab.Screen name="Feed" component={HomeNavigation} />
+            <Tab.Screen name="Feed" component={FeedNavigation} />
             <Tab.Screen name="Profile" component={ProfileNavigation} />
         </Tab.Navigator>
     )
