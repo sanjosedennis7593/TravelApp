@@ -12,6 +12,12 @@ import Feed from '@app/containers/Ride/Feed';
 import MyRide from '@app/containers/Ride/MyRide';
 import RideDetails from '@app/containers/Ride/RideDetails';
 
+// PUBLIC
+import SignIn from '@app/containers/Public/SignIn';
+import SignUp from '@app/containers/Public/SignUp';
+import ForgotPassword from '@app/containers/Public/ForgotPassword';
+
+
 // STYLES
 import colors from '@app/styles/colors';
 
@@ -42,6 +48,7 @@ const HomeNavigation = () => {
                 component={Home}
                 options={{
                     headerShown: false,
+                    animationEnabled: false
                 }}
             />
             <Stack.Screen
@@ -49,6 +56,7 @@ const HomeNavigation = () => {
                 component={CreateRide}
                 options={{
                     headerShown: false,
+                    animationEnabled: false
                 }}
             />
             <Stack.Screen
@@ -56,6 +64,7 @@ const HomeNavigation = () => {
                 component={MyRide}
                 options={{
                     headerShown: false,
+                    animationEnabled: false
                 }}
             />
             <Stack.Screen
@@ -63,6 +72,7 @@ const HomeNavigation = () => {
                 component={RideDetails}
                 options={{
                     headerShown: false,
+                    animationEnabled: false
                 }}
             />
         </Stack.Navigator>
@@ -77,13 +87,15 @@ const FeedNavigation = () => {
                 component={Feed}
                 options={{
                     headerShown: false,
+                    animationEnabled: false
                 }}
             />
-             <Stack.Screen
+            <Stack.Screen
                 name="RideDetails"
                 component={RideDetails}
                 options={{
                     headerShown: false,
+                    animationEnabled: false
                 }}
             />
         </Stack.Navigator>
@@ -99,6 +111,7 @@ const ProfileNavigation = () => {
                 component={Profile}
                 options={{
                     headerShown: false,
+                    animationEnabled: false
                 }}
             />
         </Stack.Navigator>
@@ -110,6 +123,7 @@ const TabNavigation = () => {
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 headerShown: false,
+                animationEnabled: false,
                 tabBarIcon: ({ focused, color, size }) => {
                     let iconName = focused ? 'checkbox-blank-circle' : 'checkbox-blank-circle-outline';
 
@@ -139,7 +153,32 @@ const TabNavigation = () => {
 
 const Navigation = () => {
     return (
-        <Stack.Navigator screenOptions={screenOptions} initialRouteName="Home">
+        <Stack.Navigator screenOptions={screenOptions} initialRouteName="SignIn">
+
+            <Stack.Screen
+                name="SignIn"
+                component={SignIn}
+                options={{
+                    headerShown: false,
+                    animationEnabled: false
+                }}
+            />
+            <Stack.Screen
+                name="SignUp"
+                component={SignUp}
+                options={{
+                    headerShown: false,
+                    animationEnabled: false
+                }}
+            />
+            <Stack.Screen
+                name="ForgotPassword"
+                component={ForgotPassword}
+                options={{
+                    headerShown: false,
+                    animationEnabled: false
+                }}
+            />
             <Stack.Screen name="Home" component={TabNavigation}
                 options={{
                     headerShown: false,
