@@ -4,10 +4,10 @@ import Constants from './constants';
 const initState = {
     isSignedIn: false,
     isLoading: false,
-    user: {}
+    currentUser: {}
 };
 
-export default userReducer = (state = initState, action) => {
+export default user = (state = initState, action) => {
 
     switch (action.type) {
         case Constants.REQUEST_SIGN_IN:
@@ -24,7 +24,17 @@ export default userReducer = (state = initState, action) => {
             return {
                 ...state,
                 isSignedIn: true,
-                user: action.data
+                isLoading: false,
+                currentUser: {
+                    ...(action.data || {})
+                }
+            }
+        case Constants.REQUEST_LOGOUT:
+            return {
+                ...state,
+                isSignedIn: false,
+                isLoading: false,
+                currentUser: {}
             }
 
 

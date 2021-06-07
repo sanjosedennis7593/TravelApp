@@ -10,9 +10,14 @@
 
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import Amplify from 'aws-amplify';
+
+import awsconfig from '@app/config/amplify';
 
 import Navigation from '@app/navigation';
 
+
+Amplify.configure(awsconfig);
 
 const App = () => {
   return (

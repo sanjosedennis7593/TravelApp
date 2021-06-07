@@ -17,6 +17,10 @@ const style = StyleSheet.create({
 		alignItems: 'center',
 		paddingBottom: 20,
 	},
+    logOutButton:{
+        width:'90%',
+        marginTop:12
+    }
 });
 
 export default style;

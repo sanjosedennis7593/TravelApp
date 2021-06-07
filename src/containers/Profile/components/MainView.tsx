@@ -9,33 +9,48 @@ import Input from '@app/components/Input';
 import common from '@app/styles/common';
 import styles from '../style';
 
+type Props = {
+    handleLogout: () => void
+}
 
-
-const MainView = (props: any) => {
+const MainView = (props: Props) => {
+    const { handleLogout } = props;
 
     return <Container style={styles.container}>
         <Header />
-        <ScrollView  style={common.container} contentContainerStyle={styles.scrollView}>
+        <ScrollView style={common.container} contentContainerStyle={styles.scrollView}>
             <Input
-                label='Firstname'
-                placeholder='First Name'
+                label="Firstname"
+                placeholder="First Name"
                 value={"Dennis"}
             />
             <Input
-                label='Lastname'
-                placeholder='First Name'
-                value={"Dennis"}
+                label="Lastname"
+                placeholder="Last Name"
+                value={"San Josee"}
             />
             <Input
-                label='Address'
-                placeholder='Address'
+                label="Address"
+                placeholder="Address"
                 value={"Lolomboy, Bocaue, Bulacan"}
             />
             <Button
-                title='Update'
+                title="Update"
                 buttonStyle={common.roundedButton}
                 containerStyle={common.fullWidthButton}
             />
+
+
+            <Button
+                title="Logout"
+                buttonStyle={common.roundedButton}
+                containerStyle={styles.logOutButton}
+                onPress={() => {
+                    handleLogout();
+                }}
+            />
+
+
 
         </ScrollView  >
     </Container>

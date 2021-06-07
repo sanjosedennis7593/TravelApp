@@ -16,7 +16,7 @@ import RideDetails from '@app/containers/Ride/RideDetails';
 import SignIn from '@app/containers/Public/SignIn';
 import SignUp from '@app/containers/Public/SignUp';
 import ForgotPassword from '@app/containers/Public/ForgotPassword';
-
+import Splash from '@app/containers/Public/Splash';
 
 // STYLES
 import colors from '@app/styles/colors';
@@ -153,8 +153,15 @@ const TabNavigation = () => {
 
 const Navigation = () => {
     return (
-        <Stack.Navigator screenOptions={screenOptions} initialRouteName="SignIn">
-
+        <Stack.Navigator screenOptions={screenOptions} >
+            <Stack.Screen
+                name="Splash"
+                component={Splash}
+                options={{
+                    headerShown: false,
+                    animationEnabled: false
+                }}
+            />
             <Stack.Screen
                 name="SignIn"
                 component={SignIn}

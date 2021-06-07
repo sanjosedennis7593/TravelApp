@@ -16,6 +16,8 @@ target 'App' do
 
   pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
 
+  pod 'RNAWSCognito', :path => '../node_modules/amazon-cognito-identity-js'
+
   target 'AppTests' do
     inherit! :complete
     # Pods for testing

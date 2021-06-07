@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react'
+import autoMergeLevel1 from 'redux-persist/lib/stateReconciler/autoMergeLevel1'
 import createSagaMiddleware from 'redux-saga';
 
 import rootReducer from '@app/redux/reducers'
@@ -23,7 +24,8 @@ const middlewares = [sagaMiddleware];
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    whitelist: ['user']
+    whitelist: ['user'],
+    stateReconciler: autoMergeLevel1
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

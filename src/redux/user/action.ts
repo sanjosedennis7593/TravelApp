@@ -1,7 +1,9 @@
 import Constants from './constants';
 
-const requestSignIn = () => ({
-    type: Constants.REQUEST_SIGN_IN
+const requestSignIn = (username, password) => ({
+    type: Constants.REQUEST_SIGN_IN,
+    username,
+    password
 });
 
 const requestSignUp = () => ({
@@ -9,12 +11,24 @@ const requestSignUp = () => ({
 });
 
 const requestCurrentUser = (token: string) => ({
-    type: Constants.REQUEST_CURRENT_USER
+    type: Constants.REQUEST_CURRENT_USER,
+    token
 });
 
+
+const setCurrentUser = <T>(data: T) => ({
+    type: Constants.SET_CURRENT_USER,
+    data
+});
+
+const requestLogout = () => ({
+    type: Constants.REQUEST_LOGOUT
+});
 
 export {
     requestSignIn,
     requestSignUp,
-    requestUser
+    requestCurrentUser,
+    requestLogout,
+    setCurrentUser
 }

@@ -5,11 +5,11 @@ const rootReducers = combineReducers({
     user
 });
 
-const rootReducer = (state:any, action:any) => {
-	switch (action.type) {
-		default:
-			return rootReducers(state, action);
-	}
-};
+// const rootReducer = (state:any, action:any) => {
+// 	switch (action.type) {
+// 		default:
+// 			return rootReducers(state, action);
+// 	}
+// };
 
-export default rootReducer;
+export default rootReducers;
