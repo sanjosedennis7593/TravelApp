@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StatusBar, View } from 'react-native';
+import { StatusBar, NativeSyntheticEvent, TextInputChangeEventData, View } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { Button, Text } from 'react-native-elements';
 import { useDispatch } from 'react-redux';
@@ -22,6 +22,9 @@ import { signIn } from '@app/services/auth';
 // STYLES
 import styles from '../style';
 
+// TYPES
+import { Login } from '@app/types/public';
+
 
 
 const MainView = (props) => {
@@ -29,51 +32,76 @@ const MainView = (props) => {
 	const { navigation } = props;
 
 	const [isLoading, setIsLoading] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
+	const [credentials, setCredentials] = useState<Login>({
+		email: '',
+		password: ''
+	});
+
+	const handleOnChange = (type: string) => (value: string): void => {
+		setCredentials({
+			...credentials,
+			[type]: value
+		})
+	}
 
 	const handleRedirect = (type: string): void => {
 		navigation.navigate(type);
 	}
 
 	const handleLogin = async () => {
-		setIsLoading(true);
-		const response = await signIn({
-			username:'sanjosedennis7593@gmail.com', 		
-			password: 'Dennis123@'
-		});
-		if(response && response.challengeParam && response.challengeParam.userAttributes) {
-			dispatch(setCurrentUser(response));
-			navigation.dispatch(
-				CommonActions.reset({
-					index: 0,
-					routes: [
-						{ name: 'Home' },
-					],
-				})
-			);
+		setErrorMessage('');
+		if (credentials.email !== '' && credentials.password !== '') {
+			setIsLoading(true);
+			try {
+				const response = await signIn({
+					username: credentials.email,
+					password: credentials.password
+				});
+				if (response && response.challengeParam && response.challengeParam.userAttributes) {
+					dispatch(setCurrentUser(response));
+					navigation.dispatch(
+						CommonActions.reset({
+							index: 0,
+							routes: [
+								{ name: 'Home' },
+							],
+						})
+					);
+				}
+				setIsLoading(false);
+			} catch (e) {
+				console.log('Error', e)
+				setErrorMessage(e.message);
+				setIsLoading(false);
+			}
 		}
-		setIsLoading(false);
-	}
 
+	}
+	console.log('credentials', credentials)
 	return (
 		<Container style={styles.container}>
 			<StatusBar barStyle="light-content" />
 			<Header title="Sign In" />
-
 			<Loading isVisible={isLoading} />
-
 			<View style={styles.inputContainer}>
 				<Input
-					autoCapitalize={'none'}
-					label='Email'
-					placeholder='example@email.com'
+					autoCapitalize="none"
+					label="Email"
+					placeholder="example@email.com"
+					onChangeText={handleOnChange('email')}
+					value={credentials.email}
 
 				/>
 				<Input
-					autoCapitalize={'none'}
-					label='Password'
-					placeholder='Password'
+					autoCapitalize="none"
+					label="Password"
+					placeholder="Password"
+					onChangeText={handleOnChange('password')}
+					value={credentials.password}
 					secureTextEntry
 				/>
+				<View style={{ paddingVertical: 5 }}><Text>{errorMessage}</Text></View>
 				<Button
 					disabled={isLoading}
 					title={isLoading ? 'Signing In...' : 'Sign In'}
@@ -81,6 +109,7 @@ const MainView = (props) => {
 						handleLogin();
 					}}
 				/>
+
 				<Button
 					title="Forgot your password?"
 					type="clear"
