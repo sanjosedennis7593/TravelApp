@@ -19,6 +19,10 @@ import { signUp } from '@app/services/auth';
 // TYPES
 import { Register } from '@app/types/public';
 
+// UTILS
+import { validateEmail } from '@app/utils';
+
+
 
 const MainView = (props) => {
     const { navigation } = props;
@@ -37,6 +41,13 @@ const MainView = (props) => {
         zip_code: ''
     });
 
+    const [emailErrorMessage, setEmailErrorMessage] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const [repeatPasswordMessage, setRepeatPasswordMessage] = useState('');
+    const [firstNameErrorMessage, setFirstNameErrorMessage] = useState('');
+    const [lastNameErrorMessage, setLastNameErrorMemssage] = useState('');
+
+
     const handleOnChange = (type: string) => (value: string): void => {
         setUserDetails({
             ...userDetails,
@@ -49,38 +60,55 @@ const MainView = (props) => {
     }
 
     const handleSignUp = async () => {
-       
+
         try {
 
-            if (userDetails.email !== '' &&
-                userDetails.password !== '' &&
-                userDetails.repeat_password !== '' &&
-                userDetails.family_name !== '' &&
-                userDetails.given_name !== '' &&
-                userDetails.phone_number !== '' &&
-                (userDetails.password === userDetails.repeat_password)
-            ) {
-                setIsLoading(true);
-                const response = await signUp({
-                    email: userDetails.email,
-                    password: userDetails.password,
-                    phone_number: userDetails.phone_number,
-                    given_name: userDetails.given_name,
-                    family_name: userDetails.family_name,
-                });
 
-                if (response) {
-                    setIsLoading(false);
-                    navigation.dispatch(
-                        CommonActions.reset({
-                            index: 0,
-                            routes: [
-                                { name: 'SignIn' },
-                            ],
-                        })
-                    );
-                }
+            const isEmailError = userDetails.email === '' || !validateEmail(userDetails.email);
+            const isFirstNameError = userDetails.given_name === '';
+            const isLastNameError = userDetails.family_name === '';
+            const isPasswordError = userDetails.password === '' || userDetails.password.length < 7;
+            const isRepeatPasswordError = userDetails.repeat_password === '' || (userDetails.repeat_password !== userDetails.password);
+
+            console.log('isEmailError',isEmailError)
+            console.log('isFirstNameError',isFirstNameError)
+            console.log('isLastNameError',isLastNameError)
+            console.log('isPasswordError',isPasswordError)
+            console.log('isRepeatPasswordError',isRepeatPasswordError)
+            console.log('userDetails',userDetails)
+            setEmailErrorMessage(userDetails.email === '' ? 'Email address should not be empty' : !validateEmail(userDetails.email) ? 'Invalid email address format' : '');
+            setPasswordErrorMessage(userDetails.password === '' ? 'Password should not be empty' : userDetails.password.length < 7 ? 'Password should atleast 7 characters' : '');
+            setRepeatPasswordMessage(userDetails.repeat_password === '' ? 'Password should not be empty' : userDetails.repeat_password !== userDetails.password ? 'Password not match' : '');
+            setFirstNameErrorMessage(isFirstNameError ? 'First name should not be empty' : '');
+            setLastNameErrorMemssage(isLastNameError ? 'Last name should not be empty' : '');
+
+
+            if (isEmailError || isFirstNameError || isLastNameError || isPasswordError || isRepeatPasswordError) {
+                return;
             }
+
+
+            setIsLoading(true);
+            const response = await signUp({
+                email: userDetails.email,
+                password: userDetails.password,
+                phone_number: userDetails.phone_number,
+                given_name: userDetails.given_name,
+                family_name: userDetails.family_name,
+            });
+
+            if (response) {
+                setIsLoading(false);
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [
+                            { name: 'SignIn' },
+                        ],
+                    })
+                );
+            }
+
 
         } catch (e) {
             console.log('handleSignUp Error', e);
@@ -100,14 +128,16 @@ const MainView = (props) => {
                     placeholder="example@email.com"
                     onChangeText={handleOnChange('email')}
                     value={userDetails.email}
+                    errorMessage={emailErrorMessage}
                 />
 
                 <Input
                     autoCapitalize="none"
-                    label='Password'
-                    placeholder='Password'
+                    label="Password"
+                    placeholder="Password"
                     onChangeText={handleOnChange('password')}
                     value={userDetails.password}
+                    errorMessage={passwordErrorMessage}
                     secureTextEntry
                 />
 
@@ -117,6 +147,7 @@ const MainView = (props) => {
                     placeholder="Repeat Password"
                     onChangeText={handleOnChange('repeat_password')}
                     value={userDetails.repeat_password}
+                    errorMessage={repeatPasswordMessage}
                     secureTextEntry
                 />
                 <Input
@@ -124,12 +155,14 @@ const MainView = (props) => {
                     placeholder="First Name"
                     onChangeText={handleOnChange('given_name')}
                     value={userDetails.given_name}
+                    errorMessage={firstNameErrorMessage}
                 />
                 <Input
                     label="Last Name"
                     placeholder="Last Name"
                     onChangeText={handleOnChange('family_name')}
                     value={userDetails.family_name}
+                    errorMessage={lastNameErrorMessage}
                 />
                 <Input
                     label="Address"
