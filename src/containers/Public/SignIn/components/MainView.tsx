@@ -27,6 +27,7 @@ import { Login } from '@app/types/public';
 
 
 
+
 const MainView = (props) => {
 	const dispatch = useDispatch();
 	const { navigation } = props;
@@ -58,7 +59,7 @@ const MainView = (props) => {
 					username: credentials.email,
 					password: credentials.password
 				});
-				if (response && response.challengeParam && response.challengeParam.userAttributes) {
+				if (response && response.attributes) {
 					dispatch(setCurrentUser(response));
 					navigation.dispatch(
 						CommonActions.reset({

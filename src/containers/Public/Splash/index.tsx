@@ -13,9 +13,9 @@ const Splash = (props) => {
             user: state.user
         }
     });
-    console.log('selectorProps', selectorProps.user.currentUser.Session)
+
     useEffect(() => {
-        if (selectorProps.user.currentUser && selectorProps.user.currentUser.Session) {
+        if (selectorProps.user.currentUser) {
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,
