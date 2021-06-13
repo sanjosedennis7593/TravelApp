@@ -13,7 +13,7 @@ const Splash = (props) => {
             user: state.user
         }
     });
-
+    console.log('selectorProps',selectorProps)
     useEffect(() => {
         if (selectorProps.user.currentUser) {
             navigation.dispatch(

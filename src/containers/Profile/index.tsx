@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CommonActions } from '@react-navigation/native';
 
 import { requestLogout } from '@app/redux/user/action';
@@ -10,6 +10,7 @@ import MainView from './components/MainView';
 
 const Profile = (props: any) => {
     const dispatch = useDispatch();
+    const user = useSelector(state => state.user);
     const { navigation } = props;
 
     const handleLogout = () => {
@@ -23,7 +24,7 @@ const Profile = (props: any) => {
             })
         );
     }
-    return <MainView handleLogout={handleLogout} />;
+    return <MainView handleLogout={handleLogout} user={user.currentUser} />;
 }
 
 export default Profile;

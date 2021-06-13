@@ -16,6 +16,11 @@ const requestCurrentUser = (token: string) => ({
 });
 
 
+const requestUpdateUser = <T>(data: T) => ({
+    type: Constants.REQUEST_UPDATE_USER,
+    data
+});
+
 const setCurrentUser = <T>(data: T) => ({
     type: Constants.SET_CURRENT_USER,
     data
@@ -29,6 +34,7 @@ export {
     requestSignIn,
     requestSignUp,
     requestCurrentUser,
+    requestUpdateUser,
     requestLogout,
     setCurrentUser
 }

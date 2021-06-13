@@ -15,7 +15,19 @@ type Register = {
     zip_code?: string
 }
 
+type UserDetails = {
+    given_name?: string, 
+    family_name?: string, 
+    phone_number?:string,
+    address?: string,
+    city?: string,
+    province?: string,
+    zip_code?: string
+}
+
+
 export {
     Login,
-    Register
+    Register,
+    UserDetails
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StatusBar, NativeSyntheticEvent, TextInputChangeEventData, View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import { CommonActions } from '@react-navigation/native';
 import { Button, Text } from 'react-native-elements';
 import { useDispatch } from 'react-redux';

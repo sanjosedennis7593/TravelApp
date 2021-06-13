@@ -1,9 +1,12 @@
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 import Constants from './constants';
 
-import { signIn } from '@app/services/auth';
-
+// REDUX
 import { setCurrentUser } from '@app/redux/user/action';
+
+// SERVICES
+import { signIn, updateUser } from '@app/services/auth';
+
 
 type SignInAction = {
   username: string,
@@ -60,9 +63,18 @@ function* signInUser(action: SignInAction) {
   }
 }
 
+function* updateUserDetails(action) {
+  try {
+
+  } catch (error) {
+    console.log('error : ', error);
+  }
+}
+
 export default function* userSaga() {
   yield all([
     takeEvery(Constants.REQUEST_CURRENT_USER, getUserRequest),
-    takeEvery(Constants.REQUEST_SIGN_IN, signInUser)
+    takeEvery(Constants.REQUEST_SIGN_IN, signInUser),
+    takeEvery(Constants.REQUEST_UPDATE_USER, updateUserDetails)
   ]);
 }
