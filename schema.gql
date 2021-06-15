@@ -1,0 +1,27 @@
+
+type Events {
+ event_id: String
+ user_id: String
+ user: UserInfo
+ event_name: String
+ event_date: String
+ description: String
+ meetup_location: String
+ destination: String
+ max_joiners: Int
+
+}
+
+type UserInfo {
+ given_name: String
+ family_name: String
+ email: String
+}
+
+
+type Query {
+ allEvents: [Events]
+ eventById(event_id: String): [Events]
+ eventByUser(user_id: String): [Events]
+ userInfoByEmail(email: String): UserInfo
+}

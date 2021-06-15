@@ -1,7 +1,10 @@
 import { combineReducers } from 'redux';
+
+import event from './event/reducer';
 import user from './user/reducer';
 
 const rootReducers = combineReducers({
+    event,
     user
 });
 
