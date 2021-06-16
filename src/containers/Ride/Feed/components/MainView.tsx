@@ -66,7 +66,7 @@ const MainView = (props: Props) => {
                     containerStyle={styles.listItem}
                     bottomDivider
                     onPress={() => {
-                        handleRedirect('RideDetails')
+                        handleRedirect('RideDetails', item)
                     }}
                 >
                     <Image

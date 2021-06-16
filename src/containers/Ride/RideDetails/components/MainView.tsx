@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Image, ListItem, Text } from 'react-native-elements';
 
 import Container from '@app/components/Container';
@@ -13,17 +13,24 @@ const JOINERS = [
     'John Doe (Pending)', 'Dennis San Jose (Pending)', 'Elon Musk'
 ]
 
+type Props = {
+    data: {
+        event_name: string,
+        meetup_location: string,
+        description: string
+    }
+}
 
-const MainView = (props: any) => {
+const MainView = (props: Props) => {
+    const { data } = props;
     return <Container style={styles.container}>
         <Header />
-
-        <View style={styles.content}>
-            <Text h3 style={common.bold}>Manila Night Ride</Text>
+        <ScrollView style={styles.content}>
+            <Text h3 style={common.bold}>{data.event_name}</Text>
             {/* <Text h3>{serviceType.description}</Text> */}
-            <Text style={common.primaryColoredText}>Meetup Location: Marilao, Bulacan</Text>
+            <Text style={common.primaryColoredText}>Meetup Location: {data.meetup_location}</Text>
             <Text style={common.primaryColoredText}>Created By: Dennis San Jose</Text>
-            <Text style={styles.description}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </Text>
+            <Text style={styles.description}>{data.description} </Text>
 
             <View>
                 <Text h4 style={common.bold}>Joiners</Text>
@@ -32,9 +39,7 @@ const MainView = (props: any) => {
                         key={index}
                         containerStyle={styles.listItem}
                         bottomDivider
-
                     >
-
                         <ListItem.Content style={styles.listItemContent}>
                             <ListItem.Title >
                                 {item}
@@ -48,7 +53,7 @@ const MainView = (props: any) => {
 
             </View>
 
-        </View>
+        </ScrollView>
     </Container>
 }
 

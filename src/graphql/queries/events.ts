@@ -11,5 +11,16 @@ const GET_ALL_EVENT_QUERY = gql`query allEvents {
 }
 `;
 
+const GET_EVENT_BY_USER_QUERY = gql`query eventByUser($user_id: String) {
+    eventByUser(user_id: $user_id) {
+      data {
+        event_id
+        event_name
+        meetup_location
+        description
+      }
+    }
+  }`;
 
-export { GET_ALL_EVENT_QUERY };
+
+export { GET_ALL_EVENT_QUERY, GET_EVENT_BY_USER_QUERY };

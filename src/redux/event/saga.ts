@@ -2,10 +2,10 @@ import { all, call, put, takeLatest } from 'redux-saga/effects';
 import Constants from './constants';
 
 // REDUX
-import {  requestCreateUpdateEventSuccess, requestCreateUpdateEventFailed, setEventsList } from './action';
+import {  requestCreateUpdateEventSuccess, requestCreateUpdateEventFailed, setEventsList, setEventsListByUser } from './action';
 
 // SERVICES
-import { createUpdateEvent, getEvents } from '@app/services/event';
+import { createUpdateEvent, getEvents, getEventByUser } from '@app/services/event';
 
 
 function* getAllEvents(action) {
@@ -13,6 +13,19 @@ function* getAllEvents(action) {
     const response = yield call(getEvents);
     if(response && response.allEvents && response.allEvents.data) {
         yield put(setEventsList(response.allEvents.data));
+    }
+
+  } catch (error) {
+    console.log('error : ', error);
+  }
+}
+
+function* getAllEventByUser(action) {
+  try {
+    const { user } = action;
+    const response = yield call(getEventByUser, user);
+    if(response && response.eventByUser && response.eventByUser.data) {
+      yield put(setEventsListByUser(response.eventByUser.data));
     }
 
   } catch (error) {
@@ -42,6 +55,7 @@ function* addUpdateEvent(action) {
 export default function* eventSaga() {
   yield all([
     takeLatest(Constants.REQUEST_EVENTS, getAllEvents),
-    takeLatest(Constants.REQUEST_CREATE_UPDATE_EVENT,addUpdateEvent)
+    takeLatest(Constants.REQUEST_CREATE_UPDATE_EVENT, addUpdateEvent),
+    takeLatest(Constants.REQUEST_EVENT_BY_USER, getAllEventByUser)
   ]);
 }
