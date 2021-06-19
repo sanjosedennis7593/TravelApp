@@ -7,7 +7,7 @@ import { CommonActions } from '@react-navigation/native';
 import Container from '@app/components/Container';
 import Input from '@app/components/Input';
 import Header from '@app/components/Header';
-import Loading from '@app/components/Loading';
+import { LoadingModal } from '@app/components/Loading';
 
 // STYLES
 import styles from '../style';
@@ -120,7 +120,7 @@ const MainView = (props) => {
     return (
         <Container style={styles.container}>
             <Header title="Create Account" />
-            <Loading isVisible={isLoading} />
+            <LoadingModal isVisible={isLoading} />
             <ScrollView style={common.container} contentContainerStyle={styles.scrollView}>
                 <Input
                     autoCapitalize="none"

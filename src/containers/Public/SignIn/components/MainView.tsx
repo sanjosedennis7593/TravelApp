@@ -11,7 +11,7 @@ import colors from '@app/styles/colors';
 import Container from '@app/components/Container';
 import Input from '@app/components/Input';
 import Header from '@app/components/Header';
-import Loading from '@app/components/Loading';
+import { LoadingModal } from '@app/components/Loading';
 
 // REDUX
 import { setCurrentUser } from '@app/redux/user/action';
@@ -35,8 +35,8 @@ const MainView = (props) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const [credentials, setCredentials] = useState<Login>({
-		email: '',
-		password: ''
+		email: 'sanjosedennis7593@gmail.com',
+		password: 'Dennis123@'
 	});
 
 	const handleOnChange = (type: string) => (value: string): void => {
@@ -84,7 +84,7 @@ const MainView = (props) => {
 		<Container style={styles.container}>
 			<StatusBar barStyle="light-content" />
 			<Header title="Sign In" />
-			<Loading isVisible={isLoading} />
+			<LoadingModal isVisible={isLoading} />
 			<View style={styles.inputContainer}>
 				<Input
 					autoCapitalize="none"

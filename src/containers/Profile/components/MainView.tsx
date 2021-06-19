@@ -27,6 +27,8 @@ const MainView = (props: Props) => {
     const dispatch = useDispatch();
     const { handleLogout, user } = props;
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const [userDetails, setUserDetails] = useState<UserDetails>({
         email: '',
         given_name: '',
@@ -62,10 +64,16 @@ const MainView = (props: Props) => {
     }
     const handleUpdate = async () => {
         try {
+            setIsLoading(true);
             const response = await updateUser(userDetails);
-            dispatch(setCurrentUser(response));
+            if(response) {
+                dispatch(setCurrentUser(response));
+                setIsLoading(false);
+            }
+         
         } catch (e) {
-            console.log('Handle Response Error', e)
+            console.log('Handle Response Error', e);
+            setIsLoading(false);
         }
 
     }
@@ -125,7 +133,8 @@ const MainView = (props: Props) => {
                 value={userDetails.phone_number}
             />
             <Button
-                title="Update"
+                disabled={isLoading}
+                title={`${isLoading ? 'Updating...' : 'Update'}`}
                 buttonStyle={common.roundedButton}
                 containerStyle={common.fullWidthButton}
                 onPress={() => {
@@ -135,6 +144,7 @@ const MainView = (props: Props) => {
 
 
             <Button
+                disabled={isLoading}
                 title="Logout"
                 buttonStyle={common.roundedButton}
                 containerStyle={styles.logOutButton}
