@@ -22,7 +22,7 @@ const MyRide = (props: any) => {
     
     
     useEffect(() => {
-        if((user && user.currentUser && user.currentUser.attributes)) {
+        if((user && user.currentUser && user.currentUser.attributes && event.createdEvents.length === 0)) {
             dispatch(requestEventByUser(user.currentUser.attributes.sub))
         }
     },[]);

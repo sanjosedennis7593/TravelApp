@@ -27,9 +27,10 @@ function* getAllEventByUser(action) {
     if(response && response.eventByUser && response.eventByUser.data) {
       yield put(setEventsListByUser(response.eventByUser.data));
     }
-
+   
   } catch (error) {
     console.log('error : ', error);
+    yield put(setEventsListByUser([]));
   }
 }
 

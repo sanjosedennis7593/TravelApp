@@ -9,7 +9,12 @@ const initState = {
 
 export default event = (state = initState, action) => {
     switch (action.type) {
-        case Constants.REQUEST_EVENTS || Constants.REQUEST_EVENT_BY_USER:
+        case Constants.REQUEST_EVENTS:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case Constants.REQUEST_EVENT_BY_USER:
             return {
                 ...state,
                 isLoading: true

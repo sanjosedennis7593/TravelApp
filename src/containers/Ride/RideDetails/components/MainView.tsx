@@ -8,17 +8,14 @@ import Header from '@app/components/Header';
 import styles from '../style';
 import common from '@app/styles/common';
 
+import { Event } from '@app/types/event'
 
 const JOINERS = [
     'John Doe (Pending)', 'Dennis San Jose (Pending)', 'Elon Musk'
 ]
 
 type Props = {
-    data: {
-        event_name: string,
-        meetup_location: string,
-        description: string
-    }
+    data: Event
 }
 
 const MainView = (props: Props) => {

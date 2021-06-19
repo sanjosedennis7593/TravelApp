@@ -3,6 +3,8 @@ import { useDispatch,useSelector } from 'react-redux';
 
 import { requestEvents } from '@app/redux/event/action';
 
+import { Event } from '@app/types/event';
+
 import MainView from './components/MainView';
 
 
@@ -17,7 +19,7 @@ const Feed = (props: any) => {
     },[]);
 
 
-    const handleRedirect = (type: string, data:object) => {
+    const handleRedirect = (type: string, data:Event) => {
         navigation.navigate(type,data);
     }
     return <MainView {...event} handleRedirect={handleRedirect} />;

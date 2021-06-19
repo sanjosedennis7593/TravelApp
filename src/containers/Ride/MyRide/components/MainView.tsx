@@ -4,6 +4,7 @@ import { Image, ListItem } from 'react-native-elements';
 
 import Container from '@app/components/Container';
 import Header from '@app/components/Header';
+import { Loading } from '@app/components/Loading';
 
 import styles from '../style';
 import common from '@app/styles/common';
@@ -12,21 +13,18 @@ import common from '@app/styles/common';
 import { Event } from '@appp/types/events';
 
 
-
-
 type Props = {
     createdEvents: Event[],
     handleRedirect: (type: string) => void,
     isLoading: boolean
 }
 
-
-
 const MainView = (props: Props) => {
     const { createdEvents,handleRedirect, isLoading } = props;
 
     return <Container style={styles.container}>
         <Header />
+        <Loading isVisible={isLoading} />
         <ScrollView >
             {createdEvents.map((item: Event, index: number) => {
                 return <ListItem

@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import Container from '@app/components/Container';
 import Header from '@app/components/Header';
 import Input from '@app/components/Input';
-import Loading from '@app/components/Loading';
+import { LoadingModal } from '@app/components/Loading';
 import Modal from '@app/components/Modal';
 
 import common from '@app/styles/common';
@@ -127,7 +127,7 @@ const MainView = (props: any) => {
 
     return <Container style={styles.container}>
         <Header />
-        <Loading isVisible={isLoading} />
+        <LoadingModal isVisible={isLoading} />
         <ScrollView style={common.container} contentContainerStyle={styles.scrollView}>
             <Input
                 label="Event Name"
