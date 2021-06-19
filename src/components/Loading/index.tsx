@@ -10,7 +10,7 @@ type Props = {
     isVisible: boolean
 }
 
-const Loading = (props: Props) => {
+const LoadingModal = (props: Props) => {
     const { isVisible } = props;
 
     return (
@@ -28,6 +28,19 @@ const Loading = (props: Props) => {
             </View>
         </Modal>
     );
+};
+
+const Loading = (props: Props) => {
+    const { isVisible } = props;
+
+    return <ActivityIndicator
+        color={colors.primary}
+        animating={isVisible} />
+
 }
 
-export default Loading;
+
+export {
+    Loading,
+    LoadingModal
+}
