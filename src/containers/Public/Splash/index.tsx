@@ -15,7 +15,7 @@ const Splash = (props) => {
     });
     console.log('selectorProps',selectorProps)
     useEffect(() => {
-        if (selectorProps.user.currentUser) {
+        if (Object.keys(selectorProps.user.currentUser).length > 0) {
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,

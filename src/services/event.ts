@@ -29,6 +29,7 @@ const getEventByUser = async (id: string) => {
 }
 
 const createUpdateEvent = async (data: Event) => {
+    console.log('createUpdateEvent data',datat)
     const response = await graphQLClient.request(
         CREATE_EVENT_MUTATION, data
     );

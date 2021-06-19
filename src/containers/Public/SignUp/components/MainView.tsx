@@ -14,7 +14,7 @@ import styles from '../style';
 import common from '@app/styles/common';
 
 // SERVICES
-import { signUp } from '@app/services/auth';
+import { signUp, createUpdateUserInfo } from '@app/services/auth';
 
 // TYPES
 import { Register } from '@app/types/public';
@@ -63,19 +63,18 @@ const MainView = (props) => {
 
         try {
 
-
             const isEmailError = userDetails.email === '' || !validateEmail(userDetails.email);
             const isFirstNameError = userDetails.given_name === '';
             const isLastNameError = userDetails.family_name === '';
             const isPasswordError = userDetails.password === '' || userDetails.password.length < 7;
             const isRepeatPasswordError = userDetails.repeat_password === '' || (userDetails.repeat_password !== userDetails.password);
 
-            console.log('isEmailError',isEmailError)
-            console.log('isFirstNameError',isFirstNameError)
-            console.log('isLastNameError',isLastNameError)
-            console.log('isPasswordError',isPasswordError)
-            console.log('isRepeatPasswordError',isRepeatPasswordError)
-            console.log('userDetails',userDetails)
+            console.log('isEmailError', isEmailError)
+            console.log('isFirstNameError', isFirstNameError)
+            console.log('isLastNameError', isLastNameError)
+            console.log('isPasswordError', isPasswordError)
+            console.log('isRepeatPasswordError', isRepeatPasswordError)
+            console.log('userDetails', userDetails)
             setEmailErrorMessage(userDetails.email === '' ? 'Email address should not be empty' : !validateEmail(userDetails.email) ? 'Invalid email address format' : '');
             setPasswordErrorMessage(userDetails.password === '' ? 'Password should not be empty' : userDetails.password.length < 7 ? 'Password should atleast 7 characters' : '');
             setRepeatPasswordMessage(userDetails.repeat_password === '' ? 'Password should not be empty' : userDetails.repeat_password !== userDetails.password ? 'Password not match' : '');
@@ -89,24 +88,33 @@ const MainView = (props) => {
 
 
             setIsLoading(true);
-            const response = await signUp({
+            const cognitoUserResponse = await signUp({
                 email: userDetails.email,
                 password: userDetails.password,
                 phone_number: userDetails.phone_number,
                 given_name: userDetails.given_name,
                 family_name: userDetails.family_name,
             });
+            if (cognitoUserResponse) {
+                const userInfoResponse = await createUpdateUserInfo({
+                    email: userDetails.email,
+                    phone_number: userDetails.phone_number,
+                    given_name: userDetails.given_name,
+                    family_name: userDetails.family_name,
+                },'create');
+                if (userInfoResponse?.createUserInfo) {
+                    setIsLoading(false);
+                    navigation.dispatch(
+                        CommonActions.reset({
+                            index: 0,
+                            routes: [
+                                { name: 'SignIn' },
+                            ],
+                        })
+                    );
+                }
 
-            if (response) {
-                setIsLoading(false);
-                navigation.dispatch(
-                    CommonActions.reset({
-                        index: 0,
-                        routes: [
-                            { name: 'SignIn' },
-                        ],
-                    })
-                );
+
             }
 
 

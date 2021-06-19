@@ -12,10 +12,16 @@ type Events {
 
 }
 
-type UserInfo {
+type UserInfo {  
+ user_info_id: ID
  given_name: String
  family_name: String
- email: String
+ phone_number: String
+ address: String
+ city: String
+ province: String
+ zip_code: String
+ email: String! @unique(index: "uniqueEmail")
 }
 
 

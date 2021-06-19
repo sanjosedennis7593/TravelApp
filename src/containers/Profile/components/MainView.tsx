@@ -17,7 +17,7 @@ import { setCurrentUser } from '@app/redux/user/action';
 import { UserDetails } from '@app/types/public';
 
 // SERVICES
-import { updateUser } from '@app/services/auth';
+import { updateUser, createUpdateUserInfo } from '@app/services/auth';
 
 type Props = {
     handleLogout: () => void
@@ -28,8 +28,9 @@ const MainView = (props: Props) => {
     const { handleLogout, user } = props;
 
     const [isLoading, setIsLoading] = useState(false);
-
+    console.log('MainViewuserr',user)
     const [userDetails, setUserDetails] = useState<UserDetails>({
+        user_id:'',
         email: '',
         given_name: '',
         family_name: '',
@@ -44,7 +45,8 @@ const MainView = (props: Props) => {
         if (user && user.attributes) {
             setUserDetails({
                 ...userDetails,
-                email: user.attributes,
+                user_id: user.user_id,
+                email: user.attributes.email,
                 phone_number: user.attributes.phone_number,
                 given_name: user.attributes.given_name,
                 family_name: user.attributes.family_name,
@@ -65,10 +67,28 @@ const MainView = (props: Props) => {
     const handleUpdate = async () => {
         try {
             setIsLoading(true);
-            const response = await updateUser(userDetails);
-            if(response) {
-                dispatch(setCurrentUser(response));
-                setIsLoading(false);
+            const cognitoUserResponse = await updateUser(userDetails);
+            if(cognitoUserResponse) {
+                const userInfoResponse = await createUpdateUserInfo({
+                    email: userDetails.email,
+                    given_name: userDetails.given_name,
+                    family_name: userDetails.family_name,
+                    phone_number: userDetails.phone_number,
+                    address: userDetails.address,
+                    city: userDetails.city,
+                    province: userDetails.province,
+                    zip_code: userDetails.zip_code,
+                    user_id: userDetails.user_id
+                },'edit');
+                if(userInfoResponse?.updateUserInfo) {
+                    const userPayload = {
+                        ...cognitoUserResponse,
+                        user_id:userInfoResponse?.updateUserInfo?._id
+                    }
+                    dispatch(setCurrentUser(userPayload));
+                    setIsLoading(false);
+                }
+   
             }
          
         } catch (e) {
@@ -77,9 +97,6 @@ const MainView = (props: Props) => {
         }
 
     }
-
-
-    console.log('userDetails', userDetails)
 
     return <Container style={styles.container}>
         <Header />

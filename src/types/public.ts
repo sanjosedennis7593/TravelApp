@@ -22,7 +22,8 @@ type UserDetails = {
     address?: string,
     city?: string,
     province?: string,
-    zip_code?: string
+    zip_code?: string,
+    user_id?: string
 }
 
 

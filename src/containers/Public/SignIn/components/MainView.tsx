@@ -17,7 +17,7 @@ import { LoadingModal } from '@app/components/Loading';
 import { setCurrentUser } from '@app/redux/user/action';
 
 // SERVICES
-import { signIn } from '@app/services/auth';
+import { signIn, getUserByEmail } from '@app/services/auth';
 
 // STYLES
 import styles from '../style';
@@ -35,8 +35,8 @@ const MainView = (props) => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const [credentials, setCredentials] = useState<Login>({
-		email: 'sanjosedennis7593@gmail.com',
-		password: 'Dennis123@'
+		email: '',
+		password: ''
 	});
 
 	const handleOnChange = (type: string) => (value: string): void => {
@@ -55,20 +55,29 @@ const MainView = (props) => {
 		if (credentials.email !== '' && credentials.password !== '') {
 			setIsLoading(true);
 			try {
-				const response = await signIn({
+				const cognitoUserResponse = await signIn({
 					username: credentials.email,
 					password: credentials.password
 				});
-				if (response && response.attributes) {
-					dispatch(setCurrentUser(response));
-					navigation.dispatch(
-						CommonActions.reset({
-							index: 0,
-							routes: [
-								{ name: 'Home' },
-							],
-						})
-					);
+				if (cognitoUserResponse && cognitoUserResponse.attributes) {
+
+					const userResponse = await getUserByEmail(credentials.email);
+					if(userResponse?.userInfoByEmail) {
+						const userPayload = {
+							...cognitoUserResponse,
+							user_id:userResponse?.userInfoByEmail?._id
+						};
+						dispatch(setCurrentUser(userPayload));
+						navigation.dispatch(
+							CommonActions.reset({
+								index: 0,
+								routes: [
+									{ name: 'Home' },
+								],
+							})
+						);
+					}
+					
 				}
 				setIsLoading(false);
 			} catch (e) {
@@ -79,7 +88,7 @@ const MainView = (props) => {
 		}
 
 	}
-	console.log('credentials', credentials)
+
 	return (
 		<Container style={styles.container}>
 			<StatusBar barStyle="light-content" />
