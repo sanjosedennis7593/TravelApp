@@ -5,7 +5,7 @@ import Constants from './constants';
 import { setCurrentUser } from '@app/redux/user/action';
 
 // SERVICES
-import { signIn, updateUser } from '@app/services/auth';
+import { getUserByEmail,signIn, updateUser } from '@app/services/auth';
 
 
 type SignInAction = {
@@ -14,9 +14,10 @@ type SignInAction = {
   type: string
 }
 
-function* getUserRequest() {
+function* getUserRequest<T>(action: T) {
   try {
-
+    const { data } = action;
+    const response = yield call(getUserByEmail, data.email);
   } catch (error) {
     console.log('error : ', error);
   }

@@ -10,9 +10,9 @@ const requestSignUp = () => ({
     type: Constants.REQUEST_SIGN_UP
 });
 
-const requestCurrentUser = (token: string) => ({
+const requestCurrentUser = <T>(data: T) => ({
     type: Constants.REQUEST_CURRENT_USER,
-    token
+    data
 });
 
 

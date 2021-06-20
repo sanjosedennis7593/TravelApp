@@ -22,6 +22,7 @@ type Props = {
 
 const MainView = (props: Props) => {
     const { handleRedirect, isLoading, list } = props;
+    console.log('Main View List', list)
     return <Container style={styles.container}>
         <Header />
         <Loading isVisible={isLoading} />
@@ -45,6 +46,9 @@ const MainView = (props: Props) => {
                         </ListItem.Title>
                         <ListItem.Subtitle style={common.primaryColoredText}>
                             Meetup: {item.meetup_location}
+                        </ListItem.Subtitle>
+                        <ListItem.Subtitle style={common.primaryColoredText}>
+                            Created by: {item.user.given_name} {item.user.family_name}
                         </ListItem.Subtitle>
                     </ListItem.Content>
                 </ListItem>

@@ -9,7 +9,6 @@ type Events {
  meetup_location: String
  destination: String
  max_joiners: Int
-
 }
 
 type UserInfo {  

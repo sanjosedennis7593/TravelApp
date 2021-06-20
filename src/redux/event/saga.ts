@@ -22,8 +22,8 @@ function* getAllEvents(action) {
 
 function* getAllEventByUser(action) {
   try {
-    const { user } = action;
-    const response = yield call(getEventByUser, user);
+    const { userId } = action;
+    const response = yield call(getEventByUser, userId);
     if(response && response.eventByUser && response.eventByUser.data) {
       yield put(setEventsListByUser(response.eventByUser.data));
     }

@@ -3,7 +3,6 @@ import { ScrollView, View, Pressable } from 'react-native';
 import { Button } from 'react-native-elements';
 import DatePicker from 'react-native-date-picker';
 import { format } from "date-fns";
-import { useSelector } from 'react-redux';
 
 import Container from '@app/components/Container';
 import Header from '@app/components/Header';
@@ -16,19 +15,14 @@ import styles from '../style';
 // import style from '../../../../components/ContainerButton/style';
 
 // SERVICES
-import { createUpdateEvent } from '@app/services/event'
+import { createUpdateEvent } from '@app/services/event';
+
+// TYPES
+import { Event } from '@app/types/event';
 
 
 const DATE_TIME_FORMAT = "MMMM do, yyyy H:mma";
 
-interface Event {
-    event_name: string,
-    destination: string,
-    meetup_location: string,
-    max_joiners: string,
-    event_date: Date,
-    //end_date: Date
-}
 
 interface EventErrorMessage {
     event_name: string,
@@ -36,31 +30,30 @@ interface EventErrorMessage {
     meetup_location: string,
     max_joiners: string,
     event_date: string,
+    description?: string,
     //end_date: string
 }
 
 const MainView = (props: any) => {
-    const state = useSelector(state => {
-        return {
-            user: state.user
-        }
-    })
+    const { user } = props;
 
     const [isLoading, setIsLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [currentDatePicker, setCurrentDatePicker] = useState('');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [eventDetails, setEventDetails] = useState<Event>({
-        event_name: '',
-        destination: '',
-        meetup_location: '',
-        max_joiners: '',
+        event_name: 'Manila Night Ride',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        destination: 'Manila Bay',
+        meetup_location: 'Marilao, Bulacan',
+        max_joiners: '10',
         event_date: new Date(),
         //   end_date: new Date()
     });
 
     const [eventErrorMessage, setEventErrorMessage] = useState<EventErrorMessage>({
         event_name: '',
+        description: '',
         destination: '',
         meetup_location: '',
         max_joiners: '',
@@ -98,13 +91,14 @@ const MainView = (props: any) => {
                     ...eventDetails,
                     max_joiners: parseInt(eventDetails.max_joiners),
                     event_date: format(eventDetails.event_date, DATE_TIME_FORMAT),
-                    user_id: state.user?.currentUser?.attributes?.sub
+                    user_id: user?.currentUser?.user_id
                 };
                 const response = await createUpdateEvent(payload);
                 if (response?.createEvents) {
                     setIsLoading(false);
                     setEventDetails({
                         event_name: '',
+                        description:'',
                         destination: '',
                         meetup_location: '',
                         max_joiners: '',
@@ -137,6 +131,14 @@ const MainView = (props: any) => {
                 }}
                 errorMessage={eventErrorMessage.event_name}
             />
+               <Input
+                label="Description"
+                value={eventDetails.description}
+                onChangeText={(value: string) => {
+                    handleChange('description', value)
+                }}
+            />
+
             <Input
                 label="Destination"
                 value={eventDetails.destination}

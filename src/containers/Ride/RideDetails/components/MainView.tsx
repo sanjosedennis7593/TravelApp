@@ -20,13 +20,14 @@ type Props = {
 
 const MainView = (props: Props) => {
     const { data } = props;
+    console.log('Main Viewwww', data)
     return <Container style={styles.container}>
         <Header />
         <ScrollView style={styles.content}>
             <Text h3 style={common.bold}>{data.event_name}</Text>
             {/* <Text h3>{serviceType.description}</Text> */}
             <Text style={common.primaryColoredText}>Meetup Location: {data.meetup_location}</Text>
-            <Text style={common.primaryColoredText}>Created By: Dennis San Jose</Text>
+            <Text style={common.primaryColoredText}>Created By: {data.user.given_name} {data.user.family_name}</Text>
             <Text style={styles.description}>{data.description} </Text>
 
             <View>

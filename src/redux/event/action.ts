@@ -4,9 +4,9 @@ const requestEvents = () => ({
     type: Constants.REQUEST_EVENTS,
 });
 
-const requestEventByUser = <T>(user:T) => ({
+const requestEventByUser = (userId:string) => ({
     type: Constants.REQUEST_EVENT_BY_USER,
-    user
+    userId
 });
 
 
