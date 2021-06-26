@@ -35,4 +35,32 @@ const CREATE_EVENT_MUTATION = (userId: string) => {
 }
 
 
-export { CREATE_EVENT_MUTATION };
+
+const JOIN_EVENT_MUTATION = (eventId: string, userId: String) => {
+    return gql`mutation CreateAJoiners(
+        $status: String
+        $date_joined: String
+    ) {
+        createJoiners(data: {
+            status: $status,
+            date_joined: $date_joined,
+            event: {connect: ${eventId}},
+            user: {connect: ${userId}}
+        }) {
+            status
+            date_joined
+            event {
+                _id
+            }
+            user {
+                _id
+            }
+        }
+     }
+    `
+}
+
+
+
+
+export { CREATE_EVENT_MUTATION, JOIN_EVENT_MUTATION };
