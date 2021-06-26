@@ -5,7 +5,7 @@ import Constants from './constants';
 import {  requestCreateUpdateEventSuccess, requestCreateUpdateEventFailed, setEventsList, setEventsListByUser } from './action';
 
 // SERVICES
-import { createUpdateEvent, getEvents, getEventByUser } from '@app/services/event';
+import { createUpdateEvent, getEvents, getEventByUser, joinEvent } from '@app/services/event';
 
 
 function* getAllEvents(action) {
@@ -52,11 +52,37 @@ function* addUpdateEvent(action) {
 }
 
 
+function* joinUserEvent(action) {
+  try {
+    const { user_id, event_id } = action.data;
+
+    const response = yield call(joinEvent, event_id, user_id);
+    
+  } catch (error) {
+
+  }
+}
+
+function* getSpecificEventById<T>(action:T) {
+  try {
+    const { id } = action;
+    
+  } catch (error) {
+
+  }
+}
+
+
+
+
+
 
 export default function* eventSaga() {
   yield all([
     takeLatest(Constants.REQUEST_EVENTS, getAllEvents),
     takeLatest(Constants.REQUEST_CREATE_UPDATE_EVENT, addUpdateEvent),
-    takeLatest(Constants.REQUEST_EVENT_BY_USER, getAllEventByUser)
+    takeLatest(Constants.REQUEST_EVENT_BY_USER, getAllEventByUser),
+    takeLatest(Constants.REQUEST_JOIN_EVENT, joinUserEvent),
+    takeLatest(Constants.REQUEST_EVENT_ID, getSpecificEventById)
   ]);
 }

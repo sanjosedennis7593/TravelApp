@@ -9,6 +9,11 @@ const requestEventByUser = (userId:string) => ({
     userId
 });
 
+const requetsEventById = (id:string) => ({
+    type: Constants.REQUEST_EVENT_ID,
+    id
+});
+
 
 const setEventsList = <T>(data:T) => ({
     type: Constants.SET_EVENTS_LIST,
@@ -35,6 +40,15 @@ const requestCreateUpdateEventFailed = () => ({
 });
 
 
+const requestJoinEvent = <T>(data:T) => ({
+    type: Constants.REQUEST_JOIN_EVENT,
+    data
+});
+
+
+const setJoinSuccess = () => ({
+    type: Constants.REQUEST_JOIN_SUCCESS,
+});
 
 export {
     requestCreateUpdateEvent,
@@ -42,6 +56,7 @@ export {
     requestEventByUser,
     requestCreateUpdateEventSuccess,
     requestCreateUpdateEventFailed,
+    requestJoinEvent,
     setEventsList,
     setEventsListByUser
 }

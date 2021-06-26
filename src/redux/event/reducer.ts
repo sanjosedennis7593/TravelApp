@@ -3,6 +3,7 @@ import Constants from './constants';
 
 const initState = {
     isLoading: false,
+    isJoining: false,
     list: [],
     createdEvents: []
 };
@@ -12,7 +13,8 @@ export default event = (state = initState, action) => {
         case Constants.REQUEST_EVENTS:
             return {
                 ...state,
-                isLoading: true
+                isLoading: true,
+                list: []
             }
         case Constants.REQUEST_EVENT_BY_USER:
             return {
@@ -29,6 +31,11 @@ export default event = (state = initState, action) => {
                 ...state,
                 isLoading: false
             }
+        case Constants.REQUEST_JOIN_EVENT:
+            return {
+                ...state,
+                isJoining: false
+            }
         case Constants.SET_EVENTS_LIST:
             return {
                 ...state,
@@ -41,7 +48,11 @@ export default event = (state = initState, action) => {
                 isLoading: false,
                 createdEvents: [...(action.data || [])]
             }
-
+        case Constants.REQUEST_JOIN_SUCCESS:
+            return {
+                ...state,
+                isJoining: false
+            }
         default:
             return state
     }

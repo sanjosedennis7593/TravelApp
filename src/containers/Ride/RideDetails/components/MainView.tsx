@@ -1,6 +1,6 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
-import { Image, ListItem, Text } from 'react-native-elements';
+import { ScrollView } from 'react-native';
+import { Button, ListItem, Text } from 'react-native-elements';
 
 import Container from '@app/components/Container';
 import Header from '@app/components/Header';
@@ -10,48 +10,66 @@ import common from '@app/styles/common';
 
 import { Event } from '@app/types/event'
 
-const JOINERS = [
-    'John Doe (Pending)', 'Dennis San Jose (Pending)', 'Elon Musk'
-]
-
 type Props = {
-    data: Event
+    event: Event,
+    isLoading: Boolean,
+    user: Object
+    handleJoin: (eventId: string, userId: string | null) => void
+}
+
+interface Joiners {
+    date_joined: string,
+    status: string,
+    user: {
+        given_name: string,
+        family_name: string,
+        email: string
+    }
+
 }
 
 const MainView = (props: Props) => {
-    const { data } = props;
-    console.log('Main Viewwww', data)
+    const { event, handleJoin, isLoading, user } = props;
+
+
+    const handlePress = () => {
+        handleJoin(event._id, user.user_id);
+    }
+
     return <Container style={styles.container}>
         <Header />
+
         <ScrollView style={styles.content}>
-            <Text h3 style={common.bold}>{data.event_name}</Text>
-            {/* <Text h3>{serviceType.description}</Text> */}
-            <Text style={common.primaryColoredText}>Meetup Location: {data.meetup_location}</Text>
-            <Text style={common.primaryColoredText}>Created By: {data.user.given_name} {data.user.family_name}</Text>
-            <Text style={styles.description}>{data.description} </Text>
-
-            <View>
-                <Text h4 style={common.bold}>Joiners</Text>
-                {JOINERS.map((item: string, index: number) => {
-                    return (<ListItem
-                        key={index}
-                        containerStyle={styles.listItem}
-                        bottomDivider
-                    >
-                        <ListItem.Content style={styles.listItemContent}>
-                            <ListItem.Title >
-                                {item}
-                            </ListItem.Title>
-
-                        </ListItem.Content>
-                    </ListItem>)
-
-                })}
+            <Text h3 style={common.bold}>{event.event_name}</Text>
+            <Text style={common.secondaryText}>Meetup Location: {event.meetup_location}</Text>
+            <Text style={common.secondaryText}>Created By: {event.user.given_name} {event.user.family_name}</Text>
+            <Text style={styles.description}>{event.description} </Text>
 
 
-            </View>
+
+            {event.joiners?.data.map((item: Joiners, index: number) => {
+                return (<ListItem
+                    key={index}
+                    containerStyle={styles.listItem}
+                    bottomDivider
+                >
+                    <ListItem.Content style={styles.listItemContent}>
+                        <ListItem.Title >
+                            {item.user.given_name}  {item.user.family_name}
+                        </ListItem.Title>
+                        <ListItem.Subtitle>{item.status}</ListItem.Subtitle>
+                    </ListItem.Content>
+                </ListItem>)
+            })}
+
 
         </ScrollView>
+        <Button
+            title={isLoading ? 'Joining...' : 'Join'}
+            disabled={isLoading}
+            onPress={() => handlePress()}
+        />
+
     </Container>
 }
 

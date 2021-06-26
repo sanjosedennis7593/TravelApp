@@ -18,11 +18,15 @@ const Feed = (props: any) => {
         dispatch(requestEvents());
     },[]);
 
+    const handleRefresh = ():void => {
+        dispatch(requestEvents());
+    }
 
     const handleRedirect = (type: string, data:Event) => {
         navigation.navigate(type,data);
     }
-    return <MainView {...event} handleRedirect={handleRedirect} />;
+
+    return <MainView {...event} handleRedirect={handleRedirect} handleRefresh={handleRefresh} />;
 }
 
 export default Feed;

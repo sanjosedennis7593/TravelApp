@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { RefreshControl, ScrollView } from 'react-native';
 import { Image, ListItem } from 'react-native-elements';
 
 import Container from '@app/components/Container';
@@ -16,17 +16,24 @@ import { Event } from '@app/types/event';
 type Props = {
     isLoading: boolean,
     list: [],
-    handleRedirect: (type: string) => void
+    handleRedirect: (type: string) => void,
+    handleRefresh: () => void
 }
 
 
 const MainView = (props: Props) => {
-    const { handleRedirect, isLoading, list } = props;
-    console.log('Main View List', list)
+    const { handleRedirect, handleRefresh, isLoading, list } = props;
+
     return <Container style={styles.container}>
         <Header />
         <Loading isVisible={isLoading} />
-        <ScrollView >
+        <ScrollView   
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={handleRefresh}
+          />
+        } >
             {list.map((item: Event, index: number) => {
                 return <ListItem
                     key={index}
@@ -44,11 +51,14 @@ const MainView = (props: Props) => {
                         <ListItem.Title style={common.bold}>
                             {item.event_name}
                         </ListItem.Title>
-                        <ListItem.Subtitle style={common.primaryColoredText}>
+                        <ListItem.Subtitle style={common.primaryText}>
+                            {item.destination}
+                        </ListItem.Subtitle>
+                        <ListItem.Subtitle style={common.primaryText}>
                             Meetup: {item.meetup_location}
                         </ListItem.Subtitle>
-                        <ListItem.Subtitle style={common.primaryColoredText}>
-                            Created by: {item.user.given_name} {item.user.family_name}
+                        <ListItem.Subtitle style={common.secondaryText}>
+                            By: {item.user.given_name} {item.user.family_name}
                         </ListItem.Subtitle>
                     </ListItem.Content>
                 </ListItem>

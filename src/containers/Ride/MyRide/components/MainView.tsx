@@ -20,7 +20,7 @@ type Props = {
 }
 
 const MainView = (props: Props) => {
-    const { createdEvents,handleRedirect, isLoading } = props;
+    const { createdEvents, handleRedirect, isLoading } = props;
 
     return <Container style={styles.container}>
         <Header />
@@ -43,7 +43,10 @@ const MainView = (props: Props) => {
                         <ListItem.Title style={common.bold}>
                             {item.event_name}
                         </ListItem.Title>
-                        <ListItem.Subtitle style={common.primaryColoredText}>
+                        <ListItem.Subtitle style={common.primaryText}>
+                            {item.destination}
+                        </ListItem.Subtitle>
+                        <ListItem.Subtitle style={common.primaryText}>
                             Meetup: {item.meetup_location}
                         </ListItem.Subtitle>
                     </ListItem.Content>
