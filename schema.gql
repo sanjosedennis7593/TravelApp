@@ -9,7 +9,9 @@ type Events {
  meetup_location: String
  destination: String
  max_joiners: Int
+ joiners: [Joiners]! @relation
 }
+
 
 type UserInfo {  
  user_info_id: ID
@@ -23,10 +25,17 @@ type UserInfo {
  email: String! @unique(index: "uniqueEmail")
 }
 
+type Joiners {
+   user: UserInfo
+   event: Events
+   date_joined: String
+   status: String
+}
+
 
 type Query {
  allEvents: [Events]
- eventById(event_id: String): [Events]
+ eventById(_id: String): [Events]
  eventByUser(user_id: String): [Events]
  userInfoByEmail(email: String): UserInfo
 }
