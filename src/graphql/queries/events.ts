@@ -66,21 +66,21 @@ const GET_EVENT_BY_USER_QUERY = gql`query eventByUser($user_id: String) {
 const GET_EVENT_BY_ID = gql`query findEventsByID($id: string) {
   findEventsByID(id: $id) {
       data {
-          _id
-          event_name
-          meetup_location
-          destination
-          description
-          user {
-            given_name
-            family_name
-            email
-          }
-          joiners {
-            data {
-              date_joined
-              status
-              user {
+    _id
+    event_name
+    meetup_location
+    destination
+    description
+    user {
+      given_name
+      family_name
+      email
+    }
+    joiners {
+      data {
+        date_joined
+        status
+        user {
                 given_name
                 family_name
                 email

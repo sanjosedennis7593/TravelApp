@@ -18,7 +18,7 @@ const getEventById = async (id: string) => {
     const response = await graphQLClient.request(
         GET_EVENT_BY_ID,
         {
-            id
+            id:id
         }
     );
     return response;
