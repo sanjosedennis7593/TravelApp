@@ -9,6 +9,7 @@ const GET_ALL_EVENT_QUERY = gql`query allEvents {
             destination
             description
             user {
+              _id
               given_name
               family_name
               email
@@ -18,6 +19,7 @@ const GET_ALL_EVENT_QUERY = gql`query allEvents {
                 date_joined
                 status
                 user {
+                  _id
                   given_name
                   family_name
                   email
@@ -39,15 +41,17 @@ const GET_EVENT_BY_USER_QUERY = gql`query eventByUser($user_id: String) {
         destination
         description
         user {
-              given_name
-              family_name
-              email
+          _id
+          given_name
+          family_name
+          email
         }
         joiners {
           data {
             date_joined
             status
             user {
+              _id
               given_name
               family_name
               email
