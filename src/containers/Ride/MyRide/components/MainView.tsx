@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { RefreshControl, ScrollView } from 'react-native';
 import { Image, ListItem } from 'react-native-elements';
 
 import Container from '@app/components/Container';
@@ -16,16 +16,22 @@ import { Event } from '@appp/types/events';
 type Props = {
     createdEvents: Event[],
     handleRedirect: (type: string) => void,
+    handleRefresh: () => void,
     isLoading: boolean
 }
 
 const MainView = (props: Props) => {
-    const { createdEvents, handleRedirect, isLoading } = props;
+    const { createdEvents, handleRedirect, handleRefresh, isLoading } = props;
 
     return <Container style={styles.container}>
         <Header />
         <Loading isVisible={isLoading} />
-        <ScrollView >
+        <ScrollView refreshControl={
+            <RefreshControl
+                refreshing={isLoading}
+                onRefresh={handleRefresh}
+            />
+        } >
             {createdEvents.map((item: Event, index: number) => {
                 return <ListItem
                     key={index}

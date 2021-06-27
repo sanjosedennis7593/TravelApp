@@ -30,7 +30,12 @@ const MyRide = (props: any) => {
     const handleRedirect = (type: string, data: Event) => {
         navigation.navigate(type,data);
     }
-    return <MainView createdEvents={event.createdEvents} isLoading={event.isLoading} handleRedirect={handleRedirect} />;
+
+    const handleRefresh = ():void => {
+        dispatch(requestEventByUser(user.currentUser.user_id))
+    }
+
+    return <MainView createdEvents={event.createdEvents} isLoading={event.isLoading} handleRefresh={handleRefresh} handleRedirect={handleRedirect} />;
 }
 
 export default MyRide;
