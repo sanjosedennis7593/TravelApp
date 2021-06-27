@@ -17,13 +17,13 @@ type Props = {
     isLoading: boolean,
     list: [],
     handleRedirect: (type: string) => void,
-    handleRefresh: () => void
+    handleRefresh: () => void,
+    user: Object
 }
 
 
 const MainView = (props: Props) => {
-    const { handleRedirect, handleRefresh, isLoading, list } = props;
-
+    const { handleRedirect, handleRefresh, isLoading, list, user } = props;
     return <Container style={styles.container}>
         <Header />
         <Loading isVisible={isLoading} />

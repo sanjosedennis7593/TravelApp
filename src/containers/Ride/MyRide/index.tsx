@@ -12,26 +12,26 @@ import MainView from './components/MainView';
 
 const MyRide = (props: any) => {
     const dispatch = useDispatch();
-    const {event, user} = useSelector(state => {
+    const { event, user } = useSelector(state => {
         return {
             event: state.event,
             user: state.user
         }
     })
     const { navigation } = props;
-    
-    
+
+
     useEffect(() => {
-        if((user && user.currentUser && user.currentUser && event.createdEvents.length === 0)) {
+        if ((user && user.currentUser && user.currentUser && event.createdEvents.length === 0)) {
             dispatch(requestEventByUser(user.currentUser.user_id))
         }
-    },[]);
+    }, []);
 
     const handleRedirect = (type: string, data: Event) => {
-        navigation.navigate(type,data);
+        navigation.navigate(type, data);
     }
 
-    const handleRefresh = ():void => {
+    const handleRefresh = (): void => {
         dispatch(requestEventByUser(user.currentUser.user_id))
     }
 
