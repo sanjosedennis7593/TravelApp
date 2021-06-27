@@ -10,7 +10,12 @@ import MainView from './components/MainView';
 
 const Feed = (props: any) => {
     const dispatch = useDispatch();
-    const event = useSelector(state => state.event);
+    const { event, user} = useSelector(state => {
+        return {
+            event: state.event,
+            user:state.user
+        }
+    });
 
     const { navigation } = props;
 
@@ -26,7 +31,7 @@ const Feed = (props: any) => {
         navigation.navigate(type,data);
     }
 
-    return <MainView {...event} handleRedirect={handleRedirect} handleRefresh={handleRefresh} />;
+    return <MainView {...event} handleRedirect={handleRedirect} handleRefresh={handleRefresh} user={user} />;
 }
 
 export default Feed;

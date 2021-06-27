@@ -35,6 +35,7 @@ const MainView = (props: Props) => {
           />
         } >
             {list.map((item: Event, index: number) => {
+                const myEvent = item.user._id === user.user_id;
                 return <ListItem
                     key={index}
                     containerStyle={styles.listItem}
@@ -58,7 +59,7 @@ const MainView = (props: Props) => {
                             Meetup: {item.meetup_location}
                         </ListItem.Subtitle>
                         <ListItem.Subtitle style={common.secondaryText}>
-                            By: {item.user.given_name} {item.user.family_name}
+                            By: {myEvent ? 'Me' : `${item.user.given_name} ${item.user.family_name}`}
                         </ListItem.Subtitle>
                     </ListItem.Content>
                 </ListItem>
