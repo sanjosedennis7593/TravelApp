@@ -12,10 +12,11 @@ import { Event } from '@app/types/event'
 
 type Props = {
     event: Event,
-    isJoinen: Boolean,
+    isJoined: Boolean,
     isLoading: Boolean,
-    user: Object
-    handleJoin: (eventId: string, userId: string | null) => void
+    user: Object,
+    handleJoin: (eventId: string, userId: string | null) => void,
+    handleLeave: (id: string) => void
 }
 
 interface Joiners {
@@ -30,13 +31,19 @@ interface Joiners {
 }
 
 const MainView = (props: Props) => {
-    const { event, handleJoin, isJoined, isLoading, user } = props;
+    const { event, handleJoin, handleLeave, isJoined, isLoading, user } = props;
     const isMyEvent = event?.user._id === user.user_id;
     console.log('isMyEvent', isMyEvent)
     console.log('isMyEvent user', user)
     console.log('isMyEvent event', event)
-    const handlePress = () => {
+
+    const join = () => {
         handleJoin(event._id, user.user_id);
+    }
+
+    const leave = () => {
+        const joinerDetails = event.joiners?.data.find(item => item.user._id === user.user_id);
+        handleLeave(joinerDetails?._id, event._id);
     }
 
     return <Container style={styles.container}>
@@ -70,9 +77,14 @@ const MainView = (props: Props) => {
         {!isMyEvent && <Button
             title={isLoading ? 'Joining...' : isJoined ? 'Already Joined' : 'Join'}
             disabled={isLoading || isJoined}
-            onPress={() => handlePress()}
+            onPress={() => join()}
         />
         }
+        {isJoined && <Button
+            title="Withdraw from this event"
+            onPress={() => { leave() }}
+        />}
+
 
     </Container>
 }

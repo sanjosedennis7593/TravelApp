@@ -60,7 +60,24 @@ const JOIN_EVENT_MUTATION = (eventId: string, userId: String) => {
     `
 }
 
+const DELETE_JOINERS_MUTATION = gql`mutation DeleteJoiners(
+    $id: ID!
+) {
+    deleteJoiners(id: $id) {
+        status
+        date_joined
+        event {
+            _id
+        }
+        user {
+            _id
+        }
+    }
+ }
+`
 
 
 
-export { CREATE_EVENT_MUTATION, JOIN_EVENT_MUTATION };
+
+
+export { CREATE_EVENT_MUTATION, JOIN_EVENT_MUTATION, DELETE_JOINERS_MUTATION };

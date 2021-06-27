@@ -2,7 +2,7 @@ import { graphQLClient } from '@app/graphql/index';
 
 
 import { GET_ALL_EVENT_QUERY, GET_EVENT_BY_USER_QUERY, GET_EVENT_BY_ID } from '@app/graphql/queries/events';
-import { CREATE_EVENT_MUTATION, JOIN_EVENT_MUTATION } from '@app/graphql/mutations/events';
+import { CREATE_EVENT_MUTATION, JOIN_EVENT_MUTATION, DELETE_JOINERS_MUTATION } from '@app/graphql/mutations/events';
 
 import { Event } from '@app/types/events';
 
@@ -51,10 +51,21 @@ const joinEvent = async (eventId:string, userId: string) => {
         }
     );
 
-    console.log('Responseee', response)
+    return response;
+}
+
+const deleteJoiners = async (joinerId: string) => {
+
+    const response = await graphQLClient.request(
+        DELETE_JOINERS_MUTATION,{
+            id: joinerId
+        }
+    );
 
     return response;
 }
 
 
-export { createUpdateEvent, getEvents, getEventByUser, getEventById, joinEvent };
+
+
+export { createUpdateEvent, getEvents, getEventByUser, getEventById, joinEvent, deleteJoiners };

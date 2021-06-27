@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MainView from './components/MainView';
 
-import { getEventById, joinEvent } from '@app/services/event';
+import { getEventById, joinEvent, deleteJoiners } from '@app/services/event';
 
 type Props = {
     route: object
@@ -36,13 +36,9 @@ const RideDetails = (props: Props) => {
 
     const handleJoin = async (eventId: string, userId: string): void => {
         try {
-            
             if (!isJoined) {
                 setIsLoading(true);
-                console.log('Handle Join eventId', eventId)
-                console.log('Handle Join userId', userId)
                 const joinResponse = await joinEvent(eventId, userId);
-                console.log('handleJoin response', joinResponse);
                 if (joinResponse) {
                     const eventResponse = await getEventById(eventId);
                     if (eventResponse && eventResponse.findEventsByID) {
@@ -56,10 +52,26 @@ const RideDetails = (props: Props) => {
             console.log('handleJoin error', e)
             setIsLoading(false);
         }
-
     }
 
-    return <MainView event={currentEvent} handleJoin={handleJoin} isJoined={isJoined} isLoading={isLoading} user={user.currentUser} />;
+    const handleLeave = async (joinerId: string, eventId: string): void => {
+        try {
+            const joinerResponse = await deleteJoiners(joinerId);
+
+            if (joinerResponse) {
+                const eventResponse = await getEventById(eventId);
+                if (eventResponse && eventResponse.findEventsByID) {
+                    setCurrentEvent(eventResponse.findEventsByID);
+
+                }
+            }
+        } catch (e) {
+            console.log('handleLeave error', e)
+        }
+    }
+
+
+    return <MainView event={currentEvent} handleJoin={handleJoin} handleLeave={handleLeave} isJoined={isJoined} isLoading={isLoading} user={user.currentUser} />;
 }
 
 export default RideDetails;
