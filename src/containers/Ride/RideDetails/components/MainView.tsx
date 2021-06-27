@@ -12,6 +12,7 @@ import { Event } from '@app/types/event'
 
 type Props = {
     event: Event,
+    isJoinen: Boolean,
     isLoading: Boolean,
     user: Object
     handleJoin: (eventId: string, userId: string | null) => void
@@ -29,9 +30,11 @@ interface Joiners {
 }
 
 const MainView = (props: Props) => {
-    const { event, handleJoin, isLoading, user } = props;
-
-
+    const { event, handleJoin, isJoined, isLoading, user } = props;
+    const isMyEvent = event?.user._id === user.user_id;
+    console.log('isMyEvent', isMyEvent)
+    console.log('isMyEvent user', user)
+    console.log('isMyEvent event', event)
     const handlePress = () => {
         handleJoin(event._id, user.user_id);
     }
@@ -64,11 +67,12 @@ const MainView = (props: Props) => {
 
 
         </ScrollView>
-        <Button
-            title={isLoading ? 'Joining...' : 'Join'}
-            disabled={isLoading}
+        {!isMyEvent && <Button
+            title={isLoading ? 'Joining...' : isJoined ? 'Already Joined' : 'Join'}
+            disabled={isLoading || isJoined}
             onPress={() => handlePress()}
         />
+        }
 
     </Container>
 }
