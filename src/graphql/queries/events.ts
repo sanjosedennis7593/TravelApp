@@ -63,9 +63,8 @@ const GET_EVENT_BY_USER_QUERY = gql`query eventByUser($user_id: String) {
   }`;
 
 
-const GET_EVENT_BY_ID = gql`query findEventsByID($id: string) {
+const GET_EVENT_BY_ID = gql`query findEventsByID($id: ID!) {
   findEventsByID(id: $id) {
-      data {
     _id
     event_name
     meetup_location
@@ -81,13 +80,14 @@ const GET_EVENT_BY_ID = gql`query findEventsByID($id: string) {
         date_joined
         status
         user {
-                given_name
-                family_name
-                email
-              }
-            }
-          }
+          _id
+          given_name
+          family_name
+          email
+        }
       }
+  }
+      
   }
 }
 `;
