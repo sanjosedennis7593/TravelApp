@@ -19,7 +19,8 @@ export default event = (state = initState, action) => {
         case Constants.REQUEST_EVENT_BY_USER:
             return {
                 ...state,
-                isLoading: true
+                isLoading: true,
+                createdEvents:[]
             }
         case Constants.REQUEST_CREATE_UPDATE_EVENT:
             return {
