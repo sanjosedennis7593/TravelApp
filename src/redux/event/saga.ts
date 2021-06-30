@@ -17,6 +17,7 @@ function* getAllEvents(action) {
 
   } catch (error) {
     console.log('error : ', error);
+    yield put(setEventsList([]));
   }
 }
 
