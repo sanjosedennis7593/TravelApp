@@ -5,7 +5,7 @@ import { gql } from "graphql-request";
 const CREATE_EVENT_MUTATION = (userId: string) => {
     return gql`mutation CreateAEvents(
         $event_name: String!
-        $event_date: String
+        $event_date: Long
         $description: String
         $destination: String
         $meetup_location: String

@@ -5,6 +5,7 @@ const GET_ALL_EVENT_QUERY = gql`query allEvents {
         data {
             _id
             event_name
+            event_date
             meetup_location
             destination
             description
@@ -38,6 +39,7 @@ const GET_EVENT_BY_USER_QUERY = gql`query eventByUser($user_id: String) {
         _id
         event_id
         event_name
+        event_date
         meetup_location
         destination
         description
@@ -69,6 +71,7 @@ const GET_EVENT_BY_ID = gql`query findEventsByID($id: ID!) {
   findEventsByID(id: $id) {
     _id
     event_name
+    event_date
     meetup_location
     destination
     description

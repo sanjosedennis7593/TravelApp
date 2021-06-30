@@ -20,6 +20,9 @@ import { createUpdateEvent } from '@app/services/event';
 // TYPES
 import { Event } from '@app/types/event';
 
+// UTILS
+import { convertToUnix } from '@app/utils';
+
 
 const DATE_TIME_FORMAT = "MMMM do, yyyy H:mma";
 
@@ -90,9 +93,10 @@ const MainView = (props: any) => {
                 const payload = {
                     ...eventDetails,
                     max_joiners: parseInt(eventDetails.max_joiners),
-                    event_date: format(eventDetails.event_date, DATE_TIME_FORMAT),
+                    event_date: convertToUnix(eventDetails.event_date),
                     user_id: user?.currentUser?.user_id
                 };
+        
                 const response = await createUpdateEvent(payload);
                 if (response?.createEvents) {
                     setIsLoading(false);

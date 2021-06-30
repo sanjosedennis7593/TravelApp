@@ -1,6 +1,7 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { Button, ListItem, Text } from 'react-native-elements';
+import format from 'date-fns/format';
 
 import Container from '@app/components/Container';
 import Header from '@app/components/Header';
@@ -8,7 +9,11 @@ import Header from '@app/components/Header';
 import styles from '../style';
 import common from '@app/styles/common';
 
-import { Event } from '@app/types/event'
+import { Event } from '@app/types/event';
+
+// UTILS
+import { timestampToDate } from '@app/utils';
+
 
 type Props = {
     event: Event,
@@ -30,12 +35,11 @@ interface Joiners {
 
 }
 
+const DATE_TIME_FORMAT = "MMMM do, yyyy H:mma";
+
 const MainView = (props: Props) => {
     const { event, handleJoin, handleLeave, isJoined, isLoading, user } = props;
     const isMyEvent = event?.user._id === user.user_id;
-    console.log('isMyEvent', isMyEvent)
-    console.log('isMyEvent user', user)
-    console.log('isMyEvent event', event)
 
     const join = () => {
         handleJoin(event._id, user.user_id);
@@ -46,6 +50,7 @@ const MainView = (props: Props) => {
         handleLeave(joinerDetails?._id, event._id);
     }
 
+
     return <Container style={styles.container}>
         <Header />
 
@@ -53,8 +58,10 @@ const MainView = (props: Props) => {
             <Text h3 style={common.bold}>{event.event_name}</Text>
             <Text style={common.secondaryText}>Meetup Location: {event.meetup_location}</Text>
             <Text style={common.secondaryText}>Created By: {event.user.given_name} {event.user.family_name}</Text>
+            <Text style={styles.secondaryText}>Date: {format(timestampToDate(event.event_date),DATE_TIME_FORMAT)} </Text>
             <Text style={styles.description}>{event.description} </Text>
-
+          
+            
 
 
             {event.joiners?.data.map((item: Joiners, index: number) => {

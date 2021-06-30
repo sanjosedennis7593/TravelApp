@@ -4,7 +4,7 @@ type Events {
  user_id: String
  user: UserInfo
  event_name: String
- event_date: String
+ event_date: Long
  description: String
  meetup_location: String
  destination: String
@@ -35,7 +35,7 @@ type Joiners {
 
 type Query {
  allEvents: [Events]
- eventById(_id: String): [Events]
+ eventById(event_id: String): [Events]
  eventByUser(user_id: String): [Events]
  userInfoByEmail(email: String): UserInfo
 }
