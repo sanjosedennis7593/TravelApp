@@ -81,7 +81,9 @@ const MainView = (props: Props) => {
         />
         }
         {(isJoined && !isMyEvent) && <Button
-            buttonStyle={styles.withdrawButton}
+            buttonStyle={{ 
+                backgroundColor: 'red' 
+            }}
             title="Withdraw from this event"
             onPress={() => { leave() }}
         />}
