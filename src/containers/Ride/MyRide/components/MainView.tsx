@@ -17,18 +17,18 @@ type Props = {
     createdEvents: Event[],
     handleRedirect: (type: string) => void,
     handleRefresh: () => void,
-    isLoading: boolean
+    isMyEventLoading: boolean
 }
 
 const MainView = (props: Props) => {
-    const { createdEvents, handleRedirect, handleRefresh, isLoading } = props;
+    const { createdEvents, handleRedirect, handleRefresh, isMyEventLoading } = props;
 
     return <Container style={styles.container}>
         <Header />
-        <Loading isVisible={isLoading} />
+        <Loading isVisible={isMyEventLoading} />
         <ScrollView refreshControl={
             <RefreshControl
-                refreshing={isLoading}
+                refreshing={isMyEventLoading}
                 onRefresh={handleRefresh}
             />
         } >

@@ -35,7 +35,9 @@ const MyRide = (props: any) => {
         dispatch(requestEventByUser(user.currentUser.user_id))
     }
 
-    return <MainView createdEvents={event.createdEvents} isLoading={event.isLoading} handleRefresh={handleRefresh} handleRedirect={handleRedirect} />;
+    console.log('EVENTTTT', event)
+
+    return <MainView createdEvents={event.createdEvents} isMyEventLoading={event.isMyEventLoading} handleRefresh={handleRefresh} handleRedirect={handleRedirect} />;
 }
 
 export default MyRide;

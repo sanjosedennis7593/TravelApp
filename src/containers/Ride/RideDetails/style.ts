@@ -29,6 +29,9 @@ const styles = StyleSheet.create({
 	listItemContent: {
 		alignSelf: 'flex-start'
 	},
+	withdrawButton: {
+		backroundColor: 'red'
+	}
 });
 
 export default styles;

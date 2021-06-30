@@ -14,23 +14,25 @@ import { Event } from '@app/types/event';
 
 
 type Props = {
-    isLoading: boolean,
+    isEventLoading: boolean,
     list: [],
     handleRedirect: (type: string) => void,
     handleRefresh: () => void,
-    user: Object
+    user: {
+        [key: string]: any  
+    }
 }
 
 
 const MainView = (props: Props) => {
-    const { handleRedirect, handleRefresh, isLoading, list, user } = props;
+    const { handleRedirect, handleRefresh, isEventLoading, list, user } = props;
     return <Container style={styles.container}>
         <Header />
-        <Loading isVisible={isLoading} />
+        <Loading isVisible={isEventLoading} />
         <ScrollView   
         refreshControl={
           <RefreshControl
-            refreshing={isLoading}
+            refreshing={isEventLoading}
             onRefresh={handleRefresh}
           />
         } >

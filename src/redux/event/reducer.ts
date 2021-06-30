@@ -2,7 +2,8 @@ import Constants from './constants';
 
 
 const initState = {
-    isLoading: false,
+    isEventLoading: false,
+    isMyEventLoading:false,
     isJoining: false,
     list: [],
     createdEvents: []
@@ -13,24 +14,24 @@ export default event = (state = initState, action) => {
         case Constants.REQUEST_EVENTS:
             return {
                 ...state,
-                isLoading: true,
+                isEventLoading: true,
                 list: []
             }
         case Constants.REQUEST_EVENT_BY_USER:
             return {
                 ...state,
-                isLoading: true,
+                isMyEventLoading: true,
                 createdEvents:[]
             }
         case Constants.REQUEST_CREATE_UPDATE_EVENT:
             return {
                 ...state,
-                isLoading: true
+                isEventLoading: true
             }
         case Constants.REQUEST_CREATE_UPDATE_EVENT_SUCCESS:
             return {
                 ...state,
-                isLoading: false
+                isEventLoading: false
             }
         case Constants.REQUEST_JOIN_EVENT:
             return {
@@ -40,13 +41,13 @@ export default event = (state = initState, action) => {
         case Constants.SET_EVENTS_LIST:
             return {
                 ...state,
-                isLoading: false,
+                isEventLoading: false,
                 list: [...(action.data || [])]
             }
         case Constants.SET_EVENTS_LIST_BY_USER:
             return {
                 ...state,
-                isLoading: false,
+                isMyEventLoading: false,
                 createdEvents: [...(action.data || [])]
             }
         case Constants.REQUEST_JOIN_SUCCESS:

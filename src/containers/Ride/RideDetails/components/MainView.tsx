@@ -80,7 +80,8 @@ const MainView = (props: Props) => {
             onPress={() => join()}
         />
         }
-        {isJoined && <Button
+        {(isJoined && !isMyEvent) && <Button
+            buttonStyle={styles.withdrawButton}
             title="Withdraw from this event"
             onPress={() => { leave() }}
         />}
