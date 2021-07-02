@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import MainView from './components/MainView';
 
-import { getEventById, joinEvent, deleteJoiners } from '@app/services/event';
+import { getEventById, joinEvent, deleteJoiners, updateJoinerStatus } from '@app/services/event';
 
 type Props = {
-    route: object
+    route: {
+        params:object
+    }
 }
 
 
@@ -19,7 +21,7 @@ const RideDetails = (props: Props) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [currentEvent, setCurrentEvent] = useState<{} | null>(route.params);
-    const isJoined = currentEvent?.joiners.data.find(item => item.user._id === user?.currentUser?.user_id);
+    const isJoined = currentEvent && currentEvent.joiners.data.find(item => item.user._id === user?.currentUser?.user_id);
 
     useEffect(() => {
         if (route.params) {
@@ -34,7 +36,7 @@ const RideDetails = (props: Props) => {
     }, [route.params]);
 
 
-    const handleJoin = async (eventId: string, userId: string): void => {
+    const handleJoin = async (eventId: string, userId: string) => {
         try {
             if (!isJoined) {
                 setIsLoading(true);
@@ -54,7 +56,7 @@ const RideDetails = (props: Props) => {
         }
     }
 
-    const handleLeave = async (joinerId: string, eventId: string): void => {
+    const handleLeave = async (joinerId: string, eventId: string) => {
         try {
             const joinerResponse = await deleteJoiners(joinerId);
 
@@ -62,7 +64,6 @@ const RideDetails = (props: Props) => {
                 const eventResponse = await getEventById(eventId);
                 if (eventResponse && eventResponse.findEventsByID) {
                     setCurrentEvent(eventResponse.findEventsByID);
-
                 }
             }
         } catch (e) {
@@ -71,7 +72,20 @@ const RideDetails = (props: Props) => {
     }
 
 
-    return <MainView event={currentEvent} handleJoin={handleJoin} handleLeave={handleLeave} isJoined={isJoined} isLoading={isLoading} user={user.currentUser} />;
+    const  handleStatus = async (joinerId: string, status: string) => {
+        try {
+            const joinerResponse = await updateJoinerStatus(joinerId, status);
+            console.log('joinerResponse',joinerResponse)
+            if(joinerResponse && joinerResponse.updateJoiners) {
+                setCurrentEvent(joinerResponse.updateJoiners.event);
+
+            }
+        } catch (e) {
+            console.log('handleLeave error', e)
+        }
+    }
+
+    return <MainView event={currentEvent} handleJoin={handleJoin} handleLeave={handleLeave} handleStatus={handleStatus} isJoined={isJoined} isLoading={isLoading} user={user.currentUser} />;
 }
 
 export default RideDetails;

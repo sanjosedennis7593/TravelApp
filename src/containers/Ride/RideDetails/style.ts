@@ -28,6 +28,9 @@ const styles = StyleSheet.create({
 	},
 	listItemContent: {
 		alignSelf: 'flex-start'
+	},
+	listAction:{
+		flexDirection:'row'
 	}
 });
 

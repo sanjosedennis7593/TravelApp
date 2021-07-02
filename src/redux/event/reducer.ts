@@ -9,7 +9,7 @@ const initState = {
     createdEvents: []
 };
 
-export default event = (state = initState, action) => {
+export default event = <T>(state = initState, action: T) => {
     switch (action.type) {
         case Constants.REQUEST_EVENTS:
             return {

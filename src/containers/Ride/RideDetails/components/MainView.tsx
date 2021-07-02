@@ -1,6 +1,6 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
-import { Button, ListItem, Text } from 'react-native-elements';
+import { ScrollView, View } from 'react-native';
+import { Button, Icon, ListItem, Text } from 'react-native-elements';
 import format from 'date-fns/format';
 
 import Container from '@app/components/Container';
@@ -13,6 +13,7 @@ import { Event } from '@app/types/event';
 
 // UTILS
 import { timestampToDate } from '@app/utils';
+import { DATE_TIME_FORMAT } from '@app/utils/constants';
 
 
 type Props = {
@@ -21,6 +22,7 @@ type Props = {
     isLoading: Boolean,
     user: Object,
     handleJoin: (eventId: string, userId: string | null) => void,
+    handleStatus: (joinereId: string, status: string) => void
     handleLeave: (id: string) => void
 }
 
@@ -35,10 +37,8 @@ interface Joiners {
 
 }
 
-const DATE_TIME_FORMAT = "MMMM do, yyyy H:mma";
-
 const MainView = (props: Props) => {
-    const { event, handleJoin, handleLeave, isJoined, isLoading, user } = props;
+    const { event, handleJoin, handleLeave, handleStatus, isJoined, isLoading, user } = props;
     const isMyEvent = event?.user._id === user.user_id;
 
     const join = () => {
@@ -50,6 +50,9 @@ const MainView = (props: Props) => {
         handleLeave(joinerDetails?._id, event._id);
     }
 
+    const handleJoinerStatus = function <T, S extends string>(data: T, status: S) {
+        handleStatus(data._id, status)
+    }
 
     return <Container style={styles.container}>
         <Header />
@@ -58,10 +61,8 @@ const MainView = (props: Props) => {
             <Text h3 style={common.bold}>{event.event_name}</Text>
             <Text style={common.secondaryText}>Meetup Location: {event.meetup_location}</Text>
             <Text style={common.secondaryText}>Created By: {event.user.given_name} {event.user.family_name}</Text>
-            <Text style={styles.secondaryText}>Date: {format(timestampToDate(event.event_date),DATE_TIME_FORMAT)} </Text>
+            <Text style={common.secondaryText}>Date: {format(timestampToDate(event.event_date), DATE_TIME_FORMAT)} </Text>
             <Text style={styles.description}>{event.description} </Text>
-          
-            
 
 
             {event.joiners?.data.map((item: Joiners, index: number) => {
@@ -76,6 +77,29 @@ const MainView = (props: Props) => {
                         </ListItem.Title>
                         <ListItem.Subtitle>{item.status}</ListItem.Subtitle>
                     </ListItem.Content>
+                    {isMyEvent && <View style={styles.listAction}>
+                        {(item.status === 'Pending' || item.status === 'Approved') && <Button
+                            icon={<Icon type="material-community" name="close" color="white" />}
+                            onPress={() => {
+                                handleJoinerStatus(item, 'Declined')
+                            }}
+                            buttonStyle={{
+                                backgroundColor: 'red'
+                            }}
+                        />
+                        }
+                        {(item.status === 'Pending' || item.status === 'Declined') && <Button
+                            icon={<Icon type="material-community" name="check" color="white" />}
+                            onPress={() => {
+                                handleJoinerStatus(item, 'Approved')
+                            }}
+                            buttonStyle={{
+                                backgroundColor: 'green'
+                            }}
+                        />}
+
+                    </View>}
+
                 </ListItem>)
             })}
 
@@ -88,8 +112,8 @@ const MainView = (props: Props) => {
         />
         }
         {(isJoined && !isMyEvent) && <Button
-            buttonStyle={{ 
-                backgroundColor: 'red' 
+            buttonStyle={{
+                backgroundColor: 'red'
             }}
             title="Withdraw from this event"
             onPress={() => { leave() }}

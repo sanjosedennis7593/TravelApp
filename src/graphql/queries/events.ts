@@ -76,6 +76,7 @@ const GET_EVENT_BY_ID = gql`query findEventsByID($id: ID!) {
     destination
     description
     user {
+      _id
       given_name
       family_name
       email
