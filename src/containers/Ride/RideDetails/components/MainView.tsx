@@ -22,7 +22,7 @@ type Props = {
     isLoading: Boolean,
     user: Object,
     handleJoin: (eventId: string, userId: string | null) => void,
-    handleStatus: (joinereId: string, status: string) => void
+    handleStatus: (joinerIdv: string, status: string) => void
     handleLeave: (id: string) => void
 }
 
@@ -34,12 +34,72 @@ interface Joiners {
         family_name: string,
         email: string
     }
+}
+
+const JoinersList = <T extends {
+    title: string,
+    data: [],
+    isMyEvent: boolean,
+    handleJoinerStatus: (joiner: {}, status: string) => void
+}>(props: T) => {
+    const { title, data, isMyEvent, handleJoinerStatus } = props;
+
+    return <ScrollView>
+        <Text h4 style={common.bold}>{title}</Text>
+        {data.map((item: Joiners, index: number) => {
+            return (<ListItem
+                key={index}
+                containerStyle={styles.listItem}
+                bottomDivider
+            >
+                <ListItem.Content style={styles.listItemContent}>
+                    <ListItem.Title >
+                        {item.user.given_name}  {item.user.family_name}
+                    </ListItem.Title>
+                    {/* <ListItem.Subtitle>{item.status}</ListItem.Subtitle> */}
+                </ListItem.Content>
+                {isMyEvent && <View style={styles.listAction}>
+                    {(item.status === 'Pending' || item.status === 'Approved') && <Button
+                        icon={<Icon type="material-community" name="close" color="white" />}
+                        onPress={() => {
+                            handleJoinerStatus(item, 'Declined')
+                        }}
+                        buttonStyle={{
+                            backgroundColor: 'red'
+                        }}
+                    />
+                    }
+                    {(item.status === 'Pending' || item.status === 'Declined') && <Button
+                        icon={<Icon type="material-community" name="check" color="white" />}
+                        onPress={() => {
+                            handleJoinerStatus(item, 'Approved')
+                        }}
+                        buttonStyle={{
+                            backgroundColor: 'green'
+                        }}
+                    />}
+
+                </View>}
+
+            </ListItem>)
+        })}
+    </ScrollView>
 
 }
 
 const MainView = (props: Props) => {
     const { event, handleJoin, handleLeave, handleStatus, isJoined, isLoading, user } = props;
     const isMyEvent = event?.user._id === user.user_id;
+
+    const joiners = event.joiners?.data.reduce(<T, S extends Joiners>(accum: T, item: S) => {
+        const currentKey = item.status.toLowerCase();
+        return {
+            ...accum,
+            [currentKey]: [...(accum[currentKey] || []), item]
+        }
+    }, {});
+
+    console.log('joiners', joiners)
 
     const join = () => {
         handleJoin(event._id, user.user_id);
@@ -64,8 +124,29 @@ const MainView = (props: Props) => {
             <Text style={common.secondaryText}>Date: {format(timestampToDate(event.event_date), DATE_TIME_FORMAT)} </Text>
             <Text style={styles.description}>{event.description} </Text>
 
+            {joiners.approved &&
+                <JoinersList
+                    title="Approved"
+                    data={joiners.approved || []}
+                    isMyEvent={isMyEvent}
+                    handleJoinerStatus={handleJoinerStatus}
+                />}
 
-            {event.joiners?.data.map((item: Joiners, index: number) => {
+            {joiners.pending && <JoinersList
+                title="Pending"
+                data={joiners.pending || []}
+                isMyEvent={isMyEvent}
+                handleJoinerStatus={handleJoinerStatus}
+            />}
+
+            {joiners.declined && <JoinersList
+                title="Declined"
+                data={joiners.declined || []}
+                isMyEvent={isMyEvent}
+                handleJoinerStatus={handleJoinerStatus}
+            />}
+
+            {/* {joiners.approved.map((item: Joiners, index: number) => {
                 return (<ListItem
                     key={index}
                     containerStyle={styles.listItem}
@@ -101,7 +182,7 @@ const MainView = (props: Props) => {
                     </View>}
 
                 </ListItem>)
-            })}
+            })} */}
 
 
         </ScrollView>
