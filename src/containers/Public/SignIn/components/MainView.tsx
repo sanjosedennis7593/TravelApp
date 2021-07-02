@@ -15,6 +15,7 @@ import { LoadingModal } from '@app/components/Loading';
 
 // REDUX
 import { setCurrentUser } from '@app/redux/user/action';
+import { setEventsListByUser } from '@app/redux/event/action';
 
 // SERVICES
 import { signIn, getUserByEmail } from '@app/services/auth';
@@ -63,6 +64,7 @@ const MainView = (props) => {
 
 					const userResponse = await getUserByEmail(credentials.email);
 					if(userResponse?.userInfoByEmail) {
+						dispatch(setEventsListByUser([]));
 						const userPayload = {
 							...cognitoUserResponse,
 							user_id:userResponse?.userInfoByEmail?._id
