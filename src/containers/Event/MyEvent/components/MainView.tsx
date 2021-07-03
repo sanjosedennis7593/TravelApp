@@ -9,41 +9,36 @@ import { Loading } from '@app/components/Loading';
 import styles from '../style';
 import common from '@app/styles/common';
 
-import { Event } from '@app/types/event';
-
+// TYPES
+import { Event } from '@appp/types/events';
 
 
 type Props = {
-    isEventLoading: boolean,
-    list: [],
+    createdEvents: Event[],
     handleRedirect: (type: string) => void,
     handleRefresh: () => void,
-    user: {
-        [key: string]: any  
-    }
+    isMyEventLoading: boolean
 }
 
-
 const MainView = (props: Props) => {
-    const { handleRedirect, handleRefresh, isEventLoading, list, user } = props;
+    const { createdEvents, handleRedirect, handleRefresh, isMyEventLoading } = props;
+
     return <Container style={styles.container}>
         <Header />
-        <Loading isVisible={isEventLoading} />
-        <ScrollView   
-        refreshControl={
-          <RefreshControl
-            refreshing={isEventLoading}
-            onRefresh={handleRefresh}
-          />
+        <Loading isVisible={isMyEventLoading} />
+        <ScrollView refreshControl={
+            <RefreshControl
+                refreshing={isMyEventLoading}
+                onRefresh={handleRefresh}
+            />
         } >
-            {list.map((item: Event, index: number) => {
-                const myEvent = item.user._id === user.user_id;
+            {createdEvents.map((item: Event, index: number) => {
                 return <ListItem
                     key={index}
                     containerStyle={styles.listItem}
                     bottomDivider
                     onPress={() => {
-                        handleRedirect('RideDetails', item)
+                        handleRedirect('EventDetails', item)
                     }}
                 >
                     <Image
@@ -59,9 +54,6 @@ const MainView = (props: Props) => {
                         </ListItem.Subtitle>
                         <ListItem.Subtitle style={common.primaryText}>
                             Meetup: {item.meetup_location}
-                        </ListItem.Subtitle>
-                        <ListItem.Subtitle style={common.secondaryText}>
-                            By: {myEvent ? 'Me' : `${item.user.given_name} ${item.user.family_name}`}
                         </ListItem.Subtitle>
                     </ListItem.Content>
                 </ListItem>

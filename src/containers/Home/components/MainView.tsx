@@ -18,15 +18,15 @@ const MainView = (props: Props) => {
         <Header/>
         <ScrollView contentContainerStyle={styles.menuContainer}>
             <ContainerButton
-                title={"New Ride"}
+                title={"New Event"}
                 onPress={() => {
-                    handleRedirect('CreateRide')
+                    handleRedirect('CreateEvent')
                 }}
             />
             <ContainerButton
-                title={"My Ride"}
+                title={"My Event"}
                 onPress={() => {
-                    handleRedirect('MyRide')
+                    handleRedirect('MyEvent')
                 }}
             />
             <ContainerButton

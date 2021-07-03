@@ -10,7 +10,7 @@ import { Event } from '@appp/types/events';
 import MainView from './components/MainView';
 
 
-const MyRide = (props: any) => {
+const MyEvent = (props: any) => {
     const dispatch = useDispatch();
     const { event, user } = useSelector(state => {
         return {
@@ -40,4 +40,4 @@ const MyRide = (props: any) => {
     return <MainView createdEvents={event.createdEvents} isMyEventLoading={event.isMyEventLoading} handleRefresh={handleRefresh} handleRedirect={handleRedirect} />;
 }
 
-export default MyRide;
+export default MyEvent;

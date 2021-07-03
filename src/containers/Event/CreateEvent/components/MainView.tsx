@@ -22,9 +22,9 @@ import { Event } from '@app/types/event';
 
 // UTILS
 import { convertToUnix } from '@app/utils';
+import { DATE_TIME_FORMAT } from '@app/utils/constants';
 
 
-const DATE_TIME_FORMAT = "MMMM do, yyyy H:mma";
 
 
 interface EventErrorMessage {
@@ -45,10 +45,10 @@ const MainView = (props: any) => {
     const [currentDatePicker, setCurrentDatePicker] = useState('');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [eventDetails, setEventDetails] = useState<Event>({
-        event_name: 'DRT Night Ride',
+        event_name: 'Intramuros Tour',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-        destination: 'Manila Bay',
-        meetup_location: 'Marilao, Bulacan',
+        destination: 'Intramuros Manila',
+        meetup_location: 'Quezon City, Metro Manila',
         max_joiners: '10',
         event_date: new Date(),
         //   end_date: new Date()

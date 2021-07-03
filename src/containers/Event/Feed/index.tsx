@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 import { requestEvents } from '@app/redux/event/action';
 
@@ -8,7 +9,8 @@ import { Event } from '@app/types/event';
 import MainView from './components/MainView';
 
 
-const Feed = (props: any) => {
+
+const Feed =    <T extends {}> (props: T) => {
     const dispatch = useDispatch();
     const { event, user} = useSelector(state => {
         return {

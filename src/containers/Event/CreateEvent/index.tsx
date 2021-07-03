@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import MainView from './components/MainView';
 
 
-const CreateRide = (props: any) => {
+const CreateEvent = <T extends {}>(props: T) => {
     const state = useSelector(state => {
         return {
             user: state.user
@@ -14,4 +14,4 @@ const CreateRide = (props: any) => {
     return <MainView user={state.user} />;
 }
 
-export default CreateRide;
+export default CreateEvent;

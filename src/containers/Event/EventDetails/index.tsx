@@ -11,7 +11,7 @@ type Props = {
 }
 
 
-const RideDetails = (props: Props) => {
+const EventDetails = (props: Props) => {
     const { route } = props;
     const { user } = useSelector(state => {
         return {
@@ -88,4 +88,4 @@ const RideDetails = (props: Props) => {
     return <MainView event={currentEvent} handleJoin={handleJoin} handleLeave={handleLeave} handleStatus={handleStatus} isJoined={isJoined} isLoading={isLoading} user={user.currentUser} />;
 }
 
-export default RideDetails;
+export default EventDetails;

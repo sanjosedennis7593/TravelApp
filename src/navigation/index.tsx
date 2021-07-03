@@ -7,10 +7,10 @@ import Home from '@app/containers/Home';
 import Profile from '@app/containers/Profile';
 
 // RIDE
-import CreateRide from '@app/containers/Ride/CreateRide';
-import Feed from '@app/containers/Ride/Feed';
-import MyRide from '@app/containers/Ride/MyRide';
-import RideDetails from '@app/containers/Ride/RideDetails';
+import CreateEvent from '@app/containers/Event/CreateEvent';
+import Feed from '@app/containers/Event/Feed';
+import MyEvent from '@app/containers/Event/MyEvent';
+import EventDetails from '@app/containers/Event/EventDetails';
 
 // PUBLIC
 import SignIn from '@app/containers/Public/SignIn';
@@ -52,24 +52,24 @@ const HomeNavigation = () => {
                 }}
             />
             <Stack.Screen
-                name="CreateRide"
-                component={CreateRide}
+                name="CreateEvent"
+                component={CreateEvent}
                 options={{
                     headerShown: false,
                     animationEnabled: false
                 }}
             />
             <Stack.Screen
-                name="MyRide"
-                component={MyRide}
+                name="MyEvent"
+                component={MyEvent}
                 options={{
                     headerShown: false,
                     animationEnabled: false
                 }}
             />
             <Stack.Screen
-                name="RideDetails"
-                component={RideDetails}
+                name="EventDetails"
+                component={EventDetails}
                 options={{
                     headerShown: false,
                     animationEnabled: false
@@ -91,8 +91,8 @@ const FeedNavigation = () => {
                 }}
             />
             <Stack.Screen
-                name="RideDetails"
-                component={RideDetails}
+                name="EventDetails"
+                component={EventDetails}
                 options={{
                     headerShown: false,
                     animationEnabled: false

@@ -99,7 +99,6 @@ const MainView = (props: Props) => {
         }
     }, {});
 
-    console.log('joiners', joiners)
 
     const join = () => {
         handleJoin(event._id, user.user_id);
@@ -145,44 +144,6 @@ const MainView = (props: Props) => {
                 isMyEvent={isMyEvent}
                 handleJoinerStatus={handleJoinerStatus}
             />}
-
-            {/* {joiners.approved.map((item: Joiners, index: number) => {
-                return (<ListItem
-                    key={index}
-                    containerStyle={styles.listItem}
-                    bottomDivider
-                >
-                    <ListItem.Content style={styles.listItemContent}>
-                        <ListItem.Title >
-                            {item.user.given_name}  {item.user.family_name}
-                        </ListItem.Title>
-                        <ListItem.Subtitle>{item.status}</ListItem.Subtitle>
-                    </ListItem.Content>
-                    {isMyEvent && <View style={styles.listAction}>
-                        {(item.status === 'Pending' || item.status === 'Approved') && <Button
-                            icon={<Icon type="material-community" name="close" color="white" />}
-                            onPress={() => {
-                                handleJoinerStatus(item, 'Declined')
-                            }}
-                            buttonStyle={{
-                                backgroundColor: 'red'
-                            }}
-                        />
-                        }
-                        {(item.status === 'Pending' || item.status === 'Declined') && <Button
-                            icon={<Icon type="material-community" name="check" color="white" />}
-                            onPress={() => {
-                                handleJoinerStatus(item, 'Approved')
-                            }}
-                            buttonStyle={{
-                                backgroundColor: 'green'
-                            }}
-                        />}
-
-                    </View>}
-
-                </ListItem>)
-            })} */}
 
 
         </ScrollView>
