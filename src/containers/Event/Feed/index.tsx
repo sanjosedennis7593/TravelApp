@@ -18,9 +18,8 @@ const Feed =    <T extends {}> (props: T) => {
             user:state.user
         }
     });
-
     const { navigation } = props;
-
+    
     useEffect(() => {
         dispatch(requestEvents());
     },[]);

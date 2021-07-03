@@ -47,15 +47,33 @@ const JOIN_EVENT_MUTATION = (eventId: string, userId: String) => {
             event: {connect: ${eventId}},
             user: {connect: ${userId}}
         }) {
-            _id
-            status
-            date_joined
             event {
                 _id
-            }
-            user {
-                _id
-            }
+                event_name
+                event_date
+                meetup_location
+                destination
+                description
+                user {
+                    _id
+                    given_name
+                    family_name
+                    email
+                }
+                joiners {
+                    data {
+                        _id
+                        date_joined
+                        status
+                        user {
+                            _id
+                            given_name
+                            family_name
+                            email
+                        }
+                    }
+                }
+           }
         }
      }
     `
@@ -106,15 +124,33 @@ const DELETE_JOINERS_MUTATION = gql`mutation DeleteJoiners(
     $id: ID!
 ) {
     deleteJoiners(id: $id) {
-        _id
-        status
-        date_joined
         event {
-            _id
-        }
-        user {
-            _id
-        }
+                _id
+                event_name
+                event_date
+                meetup_location
+                destination
+                description
+                user {
+                    _id
+                    given_name
+                    family_name
+                    email
+                }
+                joiners {
+                    data {
+                        _id
+                        date_joined
+                        status
+                        user {
+                            _id
+                            given_name
+                            family_name
+                            email
+                        }
+                    }
+                }
+           }
     }
  }
 `

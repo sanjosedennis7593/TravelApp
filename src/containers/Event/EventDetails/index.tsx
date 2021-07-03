@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MainView from './components/MainView';
 
+// REDUX
+import { setEventsList } from '@app/redux/event/action';
+
+// SERVICES
 import { getEventById, joinEvent, deleteJoiners, updateJoinerStatus } from '@app/services/event';
 
+// TYPES
+import { Event } from '@app/types/events'
 type Props = {
     route: {
         params:object
@@ -13,8 +19,11 @@ type Props = {
 
 const EventDetails = (props: Props) => {
     const { route } = props;
-    const { user } = useSelector(state => {
+
+    const dispatch = useDispatch();
+    const { event, user } = useSelector(state => {
         return {
+            event: state.event,
             user: state.user
         }
     });
@@ -35,18 +44,32 @@ const EventDetails = (props: Props) => {
         }
     }, [route.params]);
 
+    const handleUpdateParentEvent = (selectedEvent) => {
+        const updatedEvent = event.list.map((item:Event) => {
+            if(item._id === selectedEvent._id) {
+                return {
+                    ...selectedEvent
+                }
+            }
+            return item;
+        });
+
+        dispatch(setEventsList(updatedEvent));
+    }
+    
+
 
     const handleJoin = async (eventId: string, userId: string) => {
         try {
             if (!isJoined) {
                 setIsLoading(true);
                 const joinResponse = await joinEvent(eventId, userId);
-                if (joinResponse) {
-                    const eventResponse = await getEventById(eventId);
-                    if (eventResponse && eventResponse.findEventsByID) {
-                        setCurrentEvent(eventResponse.findEventsByID);
-                        setIsLoading(false);
-                    }
+                console.log('Join Response', joinResponse)
+                if(joinResponse && joinResponse.createJoiners) {
+                    setCurrentEvent(joinResponse.createJoiners.event);
+
+                    handleUpdateParentEvent(joinResponse.createJoiners.event);
+               
                 }
             }
 
@@ -58,13 +81,12 @@ const EventDetails = (props: Props) => {
 
     const handleLeave = async (joinerId: string, eventId: string) => {
         try {
-            const joinerResponse = await deleteJoiners(joinerId);
+            const deleteJoinerResponse = await deleteJoiners(joinerId);
+            if (deleteJoinerResponse.deleteJoiners) {
 
-            if (joinerResponse) {
-                const eventResponse = await getEventById(eventId);
-                if (eventResponse && eventResponse.findEventsByID) {
-                    setCurrentEvent(eventResponse.findEventsByID);
-                }
+                handleUpdateParentEvent(deleteJoinerResponse.deleteJoiners.event);
+                setCurrentEvent(deleteJoinerResponse.deleteJoiners.event);
+     
             }
         } catch (e) {
             console.log('handleLeave error', e)
@@ -78,12 +100,15 @@ const EventDetails = (props: Props) => {
             console.log('joinerResponse',joinerResponse)
             if(joinerResponse && joinerResponse.updateJoiners) {
                 setCurrentEvent(joinerResponse.updateJoiners.event);
-
+                handleUpdateParentEvent(joinerResponse.updateJoiners.event);
             }
         } catch (e) {
             console.log('handleLeave error', e)
         }
     }
+
+
+    console.log('EventDetails event',event)
 
     return <MainView event={currentEvent} handleJoin={handleJoin} handleLeave={handleLeave} handleStatus={handleStatus} isJoined={isJoined} isLoading={isLoading} user={user.currentUser} />;
 }

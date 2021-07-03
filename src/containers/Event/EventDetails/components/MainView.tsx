@@ -56,7 +56,6 @@ const JoinersList = <T extends {
                     <ListItem.Title >
                         {item.user.given_name}  {item.user.family_name}
                     </ListItem.Title>
-                    {/* <ListItem.Subtitle>{item.status}</ListItem.Subtitle> */}
                 </ListItem.Content>
                 {isMyEvent && <View style={styles.listAction}>
                     {(item.status === 'Pending' || item.status === 'Approved') && <Button
@@ -91,7 +90,7 @@ const MainView = (props: Props) => {
     const { event, handleJoin, handleLeave, handleStatus, isJoined, isLoading, user } = props;
     const isMyEvent = event?.user._id === user.user_id;
 
-    const joiners = event.joiners?.data.reduce(<T, S extends Joiners>(accum: T, item: S) => {
+    const joiners = event.joiners?.data.reduce(<T extends {}, S extends Joiners>(accum: T, item: S) => {
         const currentKey = item.status.toLowerCase();
         return {
             ...accum,
