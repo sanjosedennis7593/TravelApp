@@ -20,7 +20,7 @@ const MainView = (props: Props) => {
             <ContainerButton
                 title={"New Event"}
                 onPress={() => {
-                    handleRedirect('CreateEvent')
+                    handleRedirect('CreateUpdateEvent')
                 }}
             />
             <ContainerButton

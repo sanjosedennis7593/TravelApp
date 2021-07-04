@@ -7,7 +7,7 @@ import Home from '@app/containers/Home';
 import Profile from '@app/containers/Profile';
 
 // RIDE
-import CreateEvent from '@app/containers/Event/CreateEvent';
+import CreateUpdateEvent from '@app/containers/Event/CreateEvent';
 import Feed from '@app/containers/Event/Feed';
 import MyEvent from '@app/containers/Event/MyEvent';
 import EventDetails from '@app/containers/Event/EventDetails';
@@ -52,8 +52,8 @@ const HomeNavigation = () => {
                 }}
             />
             <Stack.Screen
-                name="CreateEvent"
-                component={CreateEvent}
+                name="CreateUpdateEvent"
+                component={CreateUpdateEvent}
                 options={{
                     headerShown: false,
                     animationEnabled: false

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import { ScrollView, View, Pressable } from 'react-native';
 import { Button } from 'react-native-elements';
 import DatePicker from 'react-native-date-picker';
@@ -15,13 +15,13 @@ import styles from '../style';
 // import style from '../../../../components/ContainerButton/style';
 
 // SERVICES
-import { createUpdateEvent } from '@app/services/event';
+import { createEvent, updateEvent } from '@app/services/event';
 
 // TYPES
 import { Event } from '@app/types/event';
 
 // UTILS
-import { convertToUnix } from '@app/utils';
+import { convertToUnix, timestampToDate } from '@app/utils';
 import { DATE_TIME_FORMAT } from '@app/utils/constants';
 
 
@@ -38,21 +38,37 @@ interface EventErrorMessage {
 }
 
 const MainView = (props: any) => {
-    const { user } = props;
+    const { event, handleUpdateParentEvent, user } = props;
 
     const [isLoading, setIsLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [currentDatePicker, setCurrentDatePicker] = useState('');
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [eventDetails, setEventDetails] = useState<Event>({
-        event_name: 'Intramuros Tour',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-        destination: 'Intramuros Manila',
-        meetup_location: 'Quezon City, Metro Manila',
-        max_joiners: '10',
-        event_date: new Date(),
+        event_name: event ? event.event_name : 'Intramuros Tour',
+        description: event ? event.description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        destination: event ? event.destination : 'Intramuros Manila',
+        meetup_location: event ? event.meetup_location : 'Quezon City, Metro Manila',
+        max_joiners: event && event.max_joiners  ? '10' : '10',
+        event_date:  event ? timestampToDate(event.event_date) : new Date() 
         //   end_date: new Date()
     });
+
+    useEffect(() => {
+        if (event) {
+            setEventDetails({
+                event_name: event ? event.event_name : 'Intramuros Tour',
+                description: event ? event.description : 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                destination: event ? event.destination : 'Intramuros Manila',
+                meetup_location: event ? event.meetup_location : 'Quezon City, Metro Manila',
+                max_joiners: event && event.max_joiners  ? '10' : '10',
+                event_date:  event ? timestampToDate(event.event_date) : new Date() ,
+                //   end_date: new Date() 
+            })
+        }
+    }, [event]);
+
+
 
     const [eventErrorMessage, setEventErrorMessage] = useState<EventErrorMessage>({
         event_name: '',
@@ -94,29 +110,52 @@ const MainView = (props: any) => {
                     ...eventDetails,
                     max_joiners: parseInt(eventDetails.max_joiners),
                     event_date: convertToUnix(eventDetails.event_date),
-                    user_id: user?.currentUser?.user_id
+                    user_id: user?.currentUser?.user_id,
+                    id: event._id
                 };
-        
-                const response = await createUpdateEvent(payload);
-                if (response?.createEvents) {
-                    setIsLoading(false);
-                    setEventDetails({
-                        event_name: '',
-                        description:'',
-                        destination: '',
-                        meetup_location: '',
-                        max_joiners: '',
-                        event_date: new Date()
-                    })
+
+                if(event) {
+                    const response = await updateEvent(payload);
+                    if (response?.updateEvents) {
+
+                        handleUpdateParentEvent(response.updateEvents)
+                        setIsLoading(false);
+                        // setEventDetails({
+                        //     event_name: '',
+                        //     description: '',
+                        //     destination: '',
+                        //     meetup_location: '',
+                        //     max_joiners: '',
+                        //     event_date: new Date()
+                        // })
+                    }
+                    else {
+                        setIsLoading(false);
+                    }
+                }else{
+                    const response = await createEvent(payload);
+                    if (response?.createEvents) {
+                        setIsLoading(false);
+                        setEventDetails({
+                            event_name: '',
+                            description: '',
+                            destination: '',
+                            meetup_location: '',
+                            max_joiners: '',
+                            event_date: new Date()
+                        })
+                    }
+                    else {
+                        setIsLoading(false);
+                    }
                 }
-                else {
-                    setIsLoading(false);
-                }
+               
 
 
 
             }
         } catch (e) {
+            console.log('Error', e)
             setIsLoading(false);
         }
 
@@ -135,7 +174,7 @@ const MainView = (props: any) => {
                 }}
                 errorMessage={eventErrorMessage.event_name}
             />
-               <Input
+            <Input
                 label="Description"
                 value={eventDetails.description}
                 onChangeText={(value: string) => {
@@ -197,7 +236,7 @@ const MainView = (props: any) => {
 
 
             <Button
-                title="Create"
+                title={event ? 'Update' : 'Create'}
                 buttonStyle={common.roundedButton}
                 containerStyle={common.fullWidthButton}
                 onPress={handleSubmit}
@@ -221,7 +260,6 @@ const MainView = (props: any) => {
                     title="Select"
                     containerStyle={styles.dateContainerWidth}
                     onPress={() => {
-                        console.log('selectedDate', selectedDate)
                         setEventDetails({
                             ...eventDetails,
                             [currentDatePicker]: selectedDate

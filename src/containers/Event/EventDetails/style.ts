@@ -20,17 +20,28 @@ const styles = StyleSheet.create({
 		borderColor: colors.white
 	},
 	description: {
-        paddingVertical:12
+		paddingVertical: 12,
+		fontSize: 18
 	},
 
-    listItem: {
+	listItem: {
 		backgroundColor: colors.backgroundColor1
 	},
 	listItemContent: {
 		alignSelf: 'flex-start'
 	},
-	listAction:{
-		flexDirection:'row'
+	listAction: {
+		flexDirection: 'row'
+	},
+	editViewContainer: { 
+		flexDirection: 'row-reverse' 
+	},
+	editButtonContainer: {
+		width: '14%',
+		textAlign: 'left',
+	},
+	editButton: {
+		justifyContent: 'flex-start'
 	}
 });
 

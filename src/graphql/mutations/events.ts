@@ -34,6 +34,57 @@ const CREATE_EVENT_MUTATION = (userId: string) => {
     `
 }
 
+const UPDATE_EVENT_MUTATION = gql`mutation UpdateAEvent(
+    $id: ID!
+    $event_name: String,
+    $event_date: Long,
+    $description: String,
+    $destination: String
+    $meetup_location: String,
+    $max_joiners: Int
+    ) {
+        updateEvents(
+        id: $id,
+        data:{
+            event_name: $event_name,
+            event_date: $event_date,
+            description: $description,
+            destination: $destination
+            meetup_location: $meetup_location,
+            max_joiners: $max_joiners
+
+        }
+    ) {
+        _id
+        event_name
+        event_date
+        meetup_location
+        destination
+        description
+        user {
+            _id
+            given_name
+            family_name
+            email
+        }
+        joiners {
+            data {
+                _id
+                date_joined
+                status
+                user {
+                    _id
+                    given_name
+                    family_name
+                    email
+                }
+            }
+        }
+    }
+ }
+`
+
+
 
 
 const JOIN_EVENT_MUTATION = (eventId: string, userId: String) => {
@@ -159,4 +210,4 @@ const DELETE_JOINERS_MUTATION = gql`mutation DeleteJoiners(
 
 
 
-export { CREATE_EVENT_MUTATION, JOIN_EVENT_MUTATION, DELETE_JOINERS_MUTATION, UPDATE_JOINER_STATUS_MUTATION };
+export { CREATE_EVENT_MUTATION, UPDATE_EVENT_MUTATION, JOIN_EVENT_MUTATION, DELETE_JOINERS_MUTATION, UPDATE_JOINER_STATUS_MUTATION };

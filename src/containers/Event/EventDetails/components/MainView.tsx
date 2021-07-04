@@ -7,6 +7,7 @@ import Container from '@app/components/Container';
 import Header from '@app/components/Header';
 
 import styles from '../style';
+import colors from '@app/styles/colors';
 import common from '@app/styles/common';
 
 import { Event } from '@app/types/event';
@@ -23,7 +24,8 @@ type Props = {
     user: Object,
     handleJoin: (eventId: string, userId: string | null) => void,
     handleStatus: (joinerIdv: string, status: string) => void
-    handleLeave: (id: string) => void
+    handleLeave: (id: string) => void,
+    handleRedirect: (data: object) => void
 }
 
 interface Joiners {
@@ -87,7 +89,7 @@ const JoinersList = <T extends {
 }
 
 const MainView = (props: Props) => {
-    const { event, handleJoin, handleLeave, handleStatus, isJoined, isLoading, user } = props;
+    const { event, handleJoin, handleLeave, handleRedirect, handleStatus, isJoined, isLoading, user } = props;
     const isMyEvent = event?.user._id === user.user_id;
 
     const joiners = event.joiners?.data.reduce(<T extends {}, S extends Joiners>(accum: T, item: S) => {
@@ -110,16 +112,29 @@ const MainView = (props: Props) => {
 
     const handleJoinerStatus = function <T, S extends string>(data: T, status: S) {
         handleStatus(data._id, status)
-    }
+    };
+
 
     return <Container style={styles.container}>
         <Header />
 
         <ScrollView style={styles.content}>
+            {isMyEvent && <View style={styles.editViewContainer}>
+                <Button
+                    containerStyle={styles.editButtonContainer}
+                    buttonStyle={styles.editButton}
+                    type="clear"
+                    title="Edit"
+                    onPress={() => {
+                        handleRedirect(event)
+                    }}
+                />
+            </View>}
+
             <Text h3 style={common.bold}>{event.event_name}</Text>
-            <Text style={common.secondaryText}>Meetup Location: {event.meetup_location}</Text>
-            <Text style={common.secondaryText}>Created By: {event.user.given_name} {event.user.family_name}</Text>
-            <Text style={common.secondaryText}>Date: {format(timestampToDate(event.event_date), DATE_TIME_FORMAT)} </Text>
+            <Text style={colors.secondaryText}>Meetup Location: {event.meetup_location}</Text>
+            <Text style={colors.secondaryText}>Created By: {event.user.given_name} {event.user.family_name}</Text>
+            <Text style={colors.secondaryText}>Date: {format(timestampToDate(event.event_date), DATE_TIME_FORMAT)} </Text>
             <Text style={styles.description}>{event.description} </Text>
 
             {joiners.approved &&

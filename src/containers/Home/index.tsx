@@ -3,7 +3,7 @@ import React from 'react';
 import MainView from './components/MainView';
 
 
-const Home = (props: any) => {
+const Home = <T extends {}>(props: T) => {
     const { navigation } = props;
 
     const handleRedirect = (type:string) => {

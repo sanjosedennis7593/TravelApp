@@ -5,7 +5,7 @@ import Constants from './constants';
 import {  requestCreateUpdateEventSuccess, requestCreateUpdateEventFailed, setEventsList, setEventsListByUser } from './action';
 
 // SERVICES
-import { createUpdateEvent, getEvents, getEventByUser, joinEvent } from '@app/services/event';
+import { createEvent, getEvents, getEventByUser, joinEvent } from '@app/services/event';
 
 
 function* getAllEvents(action) {
@@ -37,7 +37,7 @@ function* getAllEventByUser(action) {
 
 function* addUpdateEvent(action) {
   try {
-    const response = yield call(createUpdateEvent, action.data);
+    const response = yield call(createEvent, action.data);
     console.log('Add Update Event Response', response)
     if(response?.createEvents) {
       yield put(requestCreateUpdateEventSuccess());

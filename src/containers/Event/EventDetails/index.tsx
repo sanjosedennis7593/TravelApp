@@ -11,14 +11,17 @@ import { getEventById, joinEvent, deleteJoiners, updateJoinerStatus } from '@app
 // TYPES
 import { Event } from '@app/types/events'
 type Props = {
+    navigation:{
+        params: Object
+    }
     route: {
-        params:object
+        params: Object
     }
 }
 
 
 const EventDetails = (props: Props) => {
-    const { route } = props;
+    const { navigation,route } = props;
 
     const dispatch = useDispatch();
     const { event, user } = useSelector(state => {
@@ -107,10 +110,15 @@ const EventDetails = (props: Props) => {
         }
     }
 
+    
+
+    const handleRedirect = function<T>(data:T) {
+        navigation.navigate('CreateUpdateEvent',data);
+    }
 
     console.log('EventDetails event',event)
 
-    return <MainView event={currentEvent} handleJoin={handleJoin} handleLeave={handleLeave} handleStatus={handleStatus} isJoined={isJoined} isLoading={isLoading} user={user.currentUser} />;
+    return <MainView event={currentEvent} handleJoin={handleJoin} handleLeave={handleLeave} handleStatus={handleStatus} handleRedirect={handleRedirect} isJoined={isJoined} isLoading={isLoading} user={user.currentUser} />;
 }
 
 export default EventDetails;
